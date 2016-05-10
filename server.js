@@ -1,14 +1,16 @@
+'use strict';
+
 var ws = require('nodejs-websocket');
 var connect = require('connect');
 var serveStatic = require('serve-static');
 var url = require('url');
 
 connect().use(serveStatic(__dirname + '/webroot')).listen(8080, function() {
-	console.log('Server running on 8080...');
+	console.log('WebServer running on port 8080...');
 });
 
 var server = ws.createServer(function(conn) {
-	connStr = socketRemoteStr(conn.socket);
+	var connStr = socketRemoteStr(conn.socket);
 	console.log('New connection from ' + connStr + ' for ' + conn.path);
 	conn.on('text', function(str) {
 		console.log(socketRemoteStr(this.socket) + '> ' + str);
