@@ -56,16 +56,9 @@ function initWebsocket() {
 		return;
 	}
 
-	var loc = window.location, new_uri;
-	if(loc.protocol === 'https:') {
-		new_uri = 'wss:';
-	} else {
-		new_uri = 'ws:';
-	}
-	new_uri += '//' + loc.hostname + ':8001';
-	new_uri += '/';
-		
-	var ws = new WebSocket(new_uri);
+  var host = location.origin.replace(/^http/, 'ws')
+
+	var ws = new WebSocket(host);
 
 	ws.onopen = function() {
 		console.log("WebSocket connected");

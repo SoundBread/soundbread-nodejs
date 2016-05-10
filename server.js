@@ -1,44 +1,41 @@
 'use strict';
 
-var ws = require('nodejs-websocket');
-var connect = require('connect');
-var serveStatic = require('serve-static');
-var url = require('url');
-
+var WebSocketServer = require("ws").Server;
+var http = require('http');
+var express = require('express');
 var port = process.env.PORT || 8080;
+var app = express();
 
-connect().use(serveStatic(__dirname + '/webroot')).listen(port, function() {
-	console.log('WebServer running on port '+port+'...');
+app.use(express.static(__dirname + '/webroot'))
+
+var server = http.createServer(app);
+server.listen(port, function(){
+	console.log("Server started listening on port: "+ port);
 });
 
-var server = ws.createServer(function(conn) {
-	var connStr = socketRemoteStr(conn.socket);
-	console.log('New connection from ' + connStr + ' for ' + conn.path);
-	conn.on('text', function(str) {
-		console.log(socketRemoteStr(this.socket) + '> ' + str);
+// The pool
+var sockets = [];
 
-		broadcast(server, str);
-	});
-	conn.on('close', function(code, reason) {
-		console.log('Connection closed: ' + code + ', ' + reason);
-	});
-}).listen(8000);
+var wsServer = new WebSocketServer({server: server});
 
-var stdin = process.openStdin();
-stdin.addListener('data', function(d) {
-	console.log('Clients: ' + server.connections.length);
-	server.connections.forEach(function(conn) {
-		console.log('- ' + socketRemoteStr(conn.socket));
+// New connection, add to the pool
+wsServer.on("connection", function(ws){
+	sockets.push(ws);
+	console.log("Client joined, now: "+sockets.length);
+
+	// Connection closed, remove from pool
+	ws.on("close", function(){
+		var i = sockets.indexOf(ws);
+		if (i != -1) {
+			sockets.splice(i,1);
+		}
+	});
+
+	// Client sends message, echo to the pool
+	ws.on("message", function(msg, flags){
+		console.log("received message: "+msg);
+		sockets.forEach(function(socket) {
+			socket.send(msg);
+		});
 	});
 });
-
-function broadcast(server, msg) {
-	server.connections.forEach(function(conn) {
-		console.log(socketRemoteStr(conn.socket) + '< ' + msg);
-		conn.sendText(msg);
-	});
-}
-
-function socketRemoteStr(socket) {
-	return socket.remoteAddress + ':' + socket.remotePort;
-}
