@@ -7,6 +7,16 @@ var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var app = express();
 
+app.use('/settings.js', function(req, res, next) {
+	if(process.env.OPENSHIFT_NODEJS_PORT !== undefined) {
+		res.sendFile(__dirname + '/settings.openshift.js');
+		return;
+	} else {
+		res.sendFile(__dirname + '/settings.default.js');
+		return;
+	}
+	next();
+});
 app.use(express.static(__dirname + '/webroot'))
 
 var server = http.createServer(app);

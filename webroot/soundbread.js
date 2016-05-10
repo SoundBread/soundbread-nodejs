@@ -56,9 +56,7 @@ function initWebsocket() {
 		return;
 	}
 
-  var host = location.origin.replace(/^http/, 'ws')
-
-	var ws = new WebSocket(host);
+	var ws = new WebSocket(clientSettings.wsuri);
 
 	ws.onopen = function() {
 		console.log("WebSocket connected");
