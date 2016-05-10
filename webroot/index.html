@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SoundBread</title>
+    <script src="jquery-2.2.3.min.js"></script>
+    <script src="soundjs-0.6.2.min.js"></script>
+    <script src="soundbread.js"></script>
+    <script>
+      $(document).ready(init);
+    </script>
+
+    <style>
+      body {
+        font-family: sans-serif;
+        font-size: 11px;
+      }
+
+      #content {
+        width: 100%;
+      }
+
+      .gridBox {
+        float: left;
+        background-repeat: no-repeat;
+        background-position: 0px 0px;
+        background-image: url(img/SPRITE_button.jpg);
+        width: 190px;
+        height: 190px;
+        position: relative;
+      }
+      .gridBox:hover{
+        background-position: -380px 0px;
+        cursor:pointer;
+      }
+
+      .gridBox.active{
+        background-position: -190px 0px;
+      }
+
+      .gridBox .label {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      #error {
+        display: none;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <!-- <header>
+      <h1>SoundBread</h1>
+    </header> -->
+
+    <div id="content">
+      <div id="crickets" style="background-image:url(img/SPRITE_cricket.jpg)" class="soundItem gridBox" data-keycode="49">
+        <div class="label">Crickets</div>
+      </div>
+      <div id="downer" style="background-image:url(img/SPRITE_sadtrombone.jpg)" class="soundItem gridBox" data-keycode="50">
+        <div class="label">Downer</div>
+      </div>
+      <div id="rimshot" style="background-image:url(img/SPRITE_rimshot.jpg)" class="soundItem gridBox" data-keycode="51">
+        <div class="label">Rimshot</div>
+      </div>
+      <div id="gaaay" style="background-image:url(img/SPRITE_gaaay.jpg)" class="soundItem gridBox" data-keycode="52">
+        <div class="label">Gaaay</div>
+      </div>
+      <div id="shame" style="background-image:url(img/SPRITE_shame.jpg)" class="soundItem gridBox" data-keycode="53">
+        <div class="label">Shame</div>
+      </div>
+    </div>
+    <div id="error">
+      <h2>Sorry!</h2>
+      <p>SoundBread is not currently in your browser</p>
+    </div>
+  </body>
+</html>
