@@ -8,10 +8,10 @@ connect().use(serveStatic(__dirname + '/webroot')).listen(8080, function() {
 });
 
 var server = ws.createServer(function(conn) {
-	console.log('New connection: ' + conn.path);
+	connStr = socketRemoteStr(conn.socket);
+	console.log('New connection from ' + connStr + ' for ' + conn.path);
 	conn.on('text', function(str) {
-		//TODO: log client IP
-		console.log('> ' + str);
+		console.log(socketRemoteStr(this.socket) + '> ' + str);
 
 		broadcast(server, str);
 	});
@@ -20,9 +20,21 @@ var server = ws.createServer(function(conn) {
 	});
 }).listen(8001);
 
+var stdin = process.openStdin();
+stdin.addListener('data', function(d) {
+	console.log('Clients: ' + server.connections.length);
+	server.connections.forEach(function(conn) {
+		console.log('- ' + socketRemoteStr(conn.socket));
+	});
+});
+
 function broadcast(server, msg) {
 	server.connections.forEach(function(conn) {
-		console.log('< ' + msg);
+		console.log(socketRemoteStr(conn.socket) + '< ' + msg);
 		conn.sendText(msg);
 	});
+}
+
+function socketRemoteStr(socket) {
+	return socket.remoteAddress + ':' + socket.remotePort;
 }
