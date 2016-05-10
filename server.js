@@ -5,8 +5,8 @@ var connect = require('connect');
 var serveStatic = require('serve-static');
 var url = require('url');
 
-connect().use(serveStatic(__dirname + '/webroot')).listen(8080, function() {
-	console.log('WebServer running on port 8080...');
+connect().use(serveStatic(__dirname + '/webroot')).listen(80, function() {
+	console.log('WebServer running on port 80...');
 });
 
 var server = ws.createServer(function(conn) {
@@ -20,7 +20,7 @@ var server = ws.createServer(function(conn) {
 	conn.on('close', function(code, reason) {
 		console.log('Connection closed: ' + code + ', ' + reason);
 	});
-}).listen(8001);
+}).listen(8000);
 
 var stdin = process.openStdin();
 stdin.addListener('data', function(d) {
