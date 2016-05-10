@@ -1,0 +1,2 @@
+npm install nodejs-websocket connect serve-static
+nodejs server.js
