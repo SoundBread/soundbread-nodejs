@@ -62,7 +62,7 @@ function initWebsocket() {
 	} else {
 		new_uri = 'ws:';
 	}
-	new_uri += '//' + loc.hostname + ':8001';
+	new_uri += '//' + loc.hostname + ':8000';
 	new_uri += '/';
 		
 	var ws = new WebSocket(new_uri);
