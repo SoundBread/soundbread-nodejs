@@ -34,6 +34,9 @@ wsServer.on("connection", function(ws){
 	sockets.push(ws);
 	console.log("Client joined, now: "+sockets.length);
 
+	var cmd = {command: 'clients', count: sockets.length};
+	broadcast(JSON.stringify(cmd));
+
 	// Connection closed, remove from pool
 	ws.on("close", function(){
 		var i = sockets.indexOf(ws);
@@ -45,8 +48,20 @@ wsServer.on("connection", function(ws){
 	// Client sends message, echo to the pool
 	ws.on("message", function(msg, flags){
 		console.log("received message: "+msg);
-		sockets.forEach(function(socket) {
-			socket.send(msg);
-		});
+		var obj = JSON.parse(msg);
+
+		if(obj.command == 'play') {
+			var cmd = {command: 'play', id: obj.id};
+			broadcast(JSON.stringify(cmd));
+		} else if(obj.command == 'clients') {
+			var cmd = {command: 'clients', count: sockets.length};
+			this.send(JSON.stringify(cmd));
+		}
 	});
 });
+
+function broadcast(msg) {
+	sockets.forEach(function(socket) {
+		socket.send(msg);
+	});
+}

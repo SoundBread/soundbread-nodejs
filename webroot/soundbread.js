@@ -27,7 +27,9 @@ function init()
     var self = this;
 	var id = $(self).attr('id');
 	console.log("< " + id);
-    websocket.send(id);
+
+	var msg = {command: 'play', id: id};
+    websocket.send(JSON.stringify(msg));
   });
 
   // Simple keybinding
@@ -64,7 +66,12 @@ function initWebsocket() {
 
 	ws.onmessage = function(evt) {
 		console.log("> " + evt.data);
-		play(evt.data);
+		var msg = JSON.parse(evt.data);
+		if(msg.command == 'play') {
+			play(msg.id);
+		} else if(msg.command == 'clients') {
+			console.log(msg.count);
+		}
 	}
 
 	ws.onclose = function() {
