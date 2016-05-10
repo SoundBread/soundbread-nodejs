@@ -1,0 +1,23 @@
+{
+  "name": "soundbread-nodejs",
+  "version": "0.0.1",
+  "description": "Soundbread NodeJS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SoundBread/soundbread-nodejs"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SoundBread/soundbread-nodejs/issues"
+  },
+  "dependencies": {
+    "connect": "^3.4.1",
+    "nodejs-websocket": "^1.6.0",
+    "serve-static": "^1.10.2"
+  }
+}
