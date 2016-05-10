@@ -5,8 +5,8 @@ var connect = require('connect');
 var serveStatic = require('serve-static');
 var url = require('url');
 
-connect().use(serveStatic(__dirname + '/webroot')).listen(80, function() {
-	console.log('WebServer running on port 80...');
+connect().use(serveStatic(__dirname + '/webroot')).listen(8080, function() {
+	console.log('WebServer running on port 8080...');
 });
 
 var server = ws.createServer(function(conn) {
