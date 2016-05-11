@@ -71,6 +71,7 @@ function initWebsocket() {
       play(msg.id);
     } else if(msg.command == 'clients') {
       console.log(msg.count);
+      $('#clients').text(msg.count);
     }
   }
 
