@@ -34,8 +34,7 @@ wsServer.on("connection", function(ws){
 	sockets.push(ws);
 	console.log("Client joined, now: "+sockets.length);
 
-	var cmd = {command: 'clients', count: sockets.length};
-	broadcast(JSON.stringify(cmd));
+	broadcastClients();
 
 	// Connection closed, remove from pool
 	ws.on("close", function(){
@@ -43,6 +42,7 @@ wsServer.on("connection", function(ws){
 		if (i != -1) {
 			sockets.splice(i,1);
 		}
+		broadcastClients();
 	});
 
 	// Client sends message, echo to the pool
@@ -51,14 +51,23 @@ wsServer.on("connection", function(ws){
 		var obj = JSON.parse(msg);
 
 		if(obj.command == 'play') {
-			var cmd = {command: 'play', id: obj.id};
-			broadcast(JSON.stringify(cmd));
+			broadcastPlay(obj.id);
 		} else if(obj.command == 'clients') {
 			var cmd = {command: 'clients', count: sockets.length};
 			this.send(JSON.stringify(cmd));
 		}
 	});
 });
+
+function broadcastClients() {
+	var cmd = {command: 'clients', count: sockets.length};
+	broadcast(JSON.stringify(cmd));
+}
+
+function broadcastPlay(audioId) {
+	var cmd = {command: 'play', id: audioId};
+	broadcast(JSON.stringify(cmd));
+}
 
 function broadcast(msg) {
 	sockets.forEach(function(socket) {
