@@ -2,7 +2,7 @@ function init()
 {
   var preload;
 
-  var websocket = initWebsocket();
+  var socket = io(clientSettings.wsuri);
 
   if (!createjs.Sound.initializeDefaultPlugins()) {
     document.getElementById("error").style.display = "block";
@@ -28,8 +28,7 @@ function init()
     var id = $(self).attr('id');
     console.log("< " + id);
 
-    var msg = {command: 'play', id: id};
-    websocket.send(JSON.stringify(msg));
+    socket.emit('play',id);
   });
 
   // Simple keybinding
@@ -37,6 +36,17 @@ function init()
     keyCode = '' + e.which;
     $('.soundItem[data-keycode="' + keyCode + '"]').click();
   });
+
+  socket.on("clients", function(data){
+    console.log("> " + data);
+    $('#clients').text(data);
+  });
+
+  socket.on("play", function(data){
+    console.log("> " + data);
+    play(data);
+  })
+
 }
 
 function soundLoaded(event) {
@@ -50,36 +60,6 @@ function stop() {
     preload.close();
   }
   createjs.Sound.stop();
-}
-
-function initWebsocket() {
-  if(!("WebSocket" in window)) {
-    alert("WebSocket not supported!");
-    return;
-  }
-
-  var ws = new WebSocket(clientSettings.wsuri);
-
-  ws.onopen = function() {
-    console.log("WebSocket connected");
-  }
-
-  ws.onmessage = function(evt) {
-    console.log("> " + evt.data);
-    var msg = JSON.parse(evt.data);
-    if(msg.command == 'play') {
-      play(msg.id);
-    } else if(msg.command == 'clients') {
-      console.log(msg.count);
-      $('#clients').text(msg.count);
-    }
-  }
-
-  ws.onclose = function() {
-    console.log("WebSocket closed");
-  }
-
-  return ws;
 }
 
 function play(id) {

@@ -1,11 +1,13 @@
 'use strict';
 
-var WebSocketServer = require("ws").Server;
-var http = require('http');
 var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+// Server settings
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var app = express();
 
 app.use('/settings.js', function(req, res, next) {
 	if(process.env.OPENSHIFT_NODEJS_PORT !== undefined) {
@@ -19,58 +21,30 @@ app.use('/settings.js', function(req, res, next) {
 });
 app.use(express.static(__dirname + '/webroot'))
 
-var server = http.createServer(app);
+// Client counter
+var sockets = 0;
+
+// New connection, add to the pool
+io.on("connection", function(socket){
+	sockets++;
+	console.log("Client joined, now: "+sockets);
+	io.sockets.emit('clients', sockets);
+
+	// Connection closed, remove from pool
+	socket.on("disconnect", function(){
+		sockets--;
+		console.log("Client left, now: "+sockets);
+		io.sockets.emit('clients', sockets);
+	});
+
+	// Client wants to play audio
+	socket.on("play", function(data){
+		console.log("Playing audio: "+data);
+		io.sockets.emit('play', data);
+	});
+});
+
+// Start server
 server.listen(port, ipaddress, function(){
 	console.log("Server started listening on port: "+ port);
 });
-
-// The pool
-var sockets = [];
-
-var wsServer = new WebSocketServer({server: server});
-
-// New connection, add to the pool
-wsServer.on("connection", function(ws){
-	sockets.push(ws);
-	console.log("Client joined, now: "+sockets.length);
-
-	broadcastClients();
-
-	// Connection closed, remove from pool
-	ws.on("close", function(){
-		var i = sockets.indexOf(ws);
-		if (i != -1) {
-			sockets.splice(i,1);
-		}
-		broadcastClients();
-	});
-
-	// Client sends message, echo to the pool
-	ws.on("message", function(msg, flags){
-		console.log("received message: "+msg);
-		var obj = JSON.parse(msg);
-
-		if(obj.command == 'play') {
-			broadcastPlay(obj.id);
-		} else if(obj.command == 'clients') {
-			var cmd = {command: 'clients', count: sockets.length};
-			this.send(JSON.stringify(cmd));
-		}
-	});
-});
-
-function broadcastClients() {
-	var cmd = {command: 'clients', count: sockets.length};
-	broadcast(JSON.stringify(cmd));
-}
-
-function broadcastPlay(audioId) {
-	var cmd = {command: 'play', id: audioId};
-	broadcast(JSON.stringify(cmd));
-}
-
-function broadcast(msg) {
-	sockets.forEach(function(socket) {
-		socket.send(msg);
-	});
-}
