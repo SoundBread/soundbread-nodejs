@@ -56,6 +56,7 @@ io.on("connection", function(socket){
 
 	// Connection closed, remove from pool
 	socket.on("disconnect", function(){
+		clearTimeout(clients[socket.id].credittimer);
 		delete clients[socket.id];
 		console.log("Client left, now: "+clients.size());
 		io.sockets.emit('clients', clients.size());
