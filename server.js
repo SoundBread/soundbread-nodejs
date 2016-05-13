@@ -8,6 +8,7 @@ var io = require('socket.io')(server);
 // Server settings
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var maxcredits = 5;
 
 app.use('/settings.js', function(req, res, next) {
 	if(process.env.OPENSHIFT_NODEJS_PORT !== undefined) {
@@ -21,26 +22,57 @@ app.use('/settings.js', function(req, res, next) {
 });
 app.use(express.static(__dirname + '/webroot'))
 
-// Client counter
-var sockets = 0;
+// Clients
+var clients = new Object();
+clients.size = function(){
+	var size = 0, key;
+	for (key in clients) {
+			if (clients.hasOwnProperty(key)) size++;
+	}
+	return size-1;
+}
+
+// Credit timer
+function createTimeout(socket) {
+	var credittimer = setTimeout(function(){
+		clients[socket.id].credits++;
+		socket.emit('credits', clients[socket.id].credits);
+		if (clients[socket.id].credits < maxcredits) {
+			clients[socket.id].credittimer = createTimeout(socket);
+		}
+	}, 1000);
+	return credittimer;
+}
 
 // New connection, add to the pool
 io.on("connection", function(socket){
-	sockets++;
-	console.log("Client joined, now: "+sockets);
-	io.sockets.emit('clients', sockets);
+	clients[socket.id] = {
+		'credits': 0,
+		'credittimer': createTimeout(socket)
+	};
+	console.log("Client joined, now: "+ clients.size());
+	io.sockets.emit('clients', clients.size());
+	socket.emit('credits', clients[socket.id].credits);
 
 	// Connection closed, remove from pool
 	socket.on("disconnect", function(){
-		sockets--;
-		console.log("Client left, now: "+sockets);
-		io.sockets.emit('clients', sockets);
+		delete clients[socket.id];
+		console.log("Client left, now: "+clients.size());
+		io.sockets.emit('clients', clients.size());
 	});
 
 	// Client wants to play audio
 	socket.on("play", function(data){
-		console.log("Playing audio: "+data);
-		io.sockets.emit('play', data);
+		if (clients[socket.id].credits > 0) {
+			console.log("Playing audio: "+data);
+			io.sockets.emit('play', data);
+			clients[socket.id].credits--;
+			socket.emit('credits', clients[socket.id].credits);
+			clearTimeout(clients[socket.id].credittimer);
+			clients[socket.id].credittimer = createTimeout(socket);
+		} else {
+			socket.emit('errormsg','Not enough credits');
+		}
 	});
 });
 

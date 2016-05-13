@@ -2,6 +2,9 @@ function init()
 {
   var preload;
 
+  var maxcredits = 5;
+  $('#credits').attr('aria-valuemax', maxcredits);
+
   var socket = io(clientSettings.wsuri);
 
   if (!createjs.Sound.initializeDefaultPlugins()) {
@@ -45,7 +48,16 @@ function init()
   socket.on("play", function(data){
     console.log("> " + data);
     play(data);
-  })
+  });
+
+  socket.on("credits", function(data){
+    console.log("Credits changed, now: "+ data);
+    $('#credits').attr('aria-valuenow', data).css('width', 100/maxcredits*data+'%');
+  });
+
+  socket.on("errormsg", function(data){
+    console.log("Error: " + data);
+  });
 
 }
 
