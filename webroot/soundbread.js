@@ -20,7 +20,8 @@ function init()
     {src: "downer.mp3", id: 'downer'},
     {src: "rimshot.mp3", id: 'rimshot'},
     {src: "gaaay.mp3", id: 'gaaay'},
-    {src: "shame.mp3", id: 'shame'}
+    {src: "shame.mp3", id: 'shame'},
+    {src: "hodor.mp3", id: 'hodor'}
   ];
 
   createjs.Sound.addEventListener("fileload", createjs.proxy(soundLoaded, this));
