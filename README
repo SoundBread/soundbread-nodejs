@@ -1,2 +1,11 @@
 npm install
 npm start
+
+-- Sprite generation with imagemagick --
+Input image:
+Size: 190x190
+Background: white
+
+convert input.jpg -fill white -colorize 50% temp-white.jpg
+convert input.jpg -fill black -colorize 50% temp-black.jpg
+convert temp-white.jpg temp-black.jpg input.jpg +append SPRITE_output.jpg
