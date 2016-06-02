@@ -40,14 +40,14 @@ function createTimeout(socket) {
 		if (clients[socket.id].credits < maxcredits) {
 			clients[socket.id].credittimer = createTimeout(socket);
 		}
-	}, 1000);
+	}, 10000);
 	return credittimer;
 }
 
 // New connection, add to the pool
 io.on("connection", function(socket){
 	clients[socket.id] = {
-		'credits': 0,
+		'credits': maxcredits,
 		'credittimer': createTimeout(socket)
 	};
 	console.log("Client joined, now: "+ clients.size());
