@@ -37,10 +37,24 @@ function init()
     socket.emit('play',id);
   });
 
+  $('.soundItem[data-keycode]').each(function(i, elm) {
+    var hintkey = String.fromCharCode($(elm).attr('data-keycode'));
+    var hintdiv = $('<div class="keyhint">'+hintkey+'</div>');
+    hintdiv.hide();
+    $(elm).append(hintdiv);
+  });
+
   // Simple keybinding
   $(document).keydown(function(e){
     keyCode = '' + e.which;
-    $('.soundItem[data-keycode="' + keyCode + '"]').click();
+
+    if(keyCode == 191) { // '/' or '?'
+      $('.keyhint').show();
+    } else if(keyCode == 27) { // ESC
+      $('.keyhint').hide();
+    } else {
+      $('.soundItem[data-keycode="' + keyCode + '"]').click();
+    }
   });
 
   socket.on("clients", function(data){
