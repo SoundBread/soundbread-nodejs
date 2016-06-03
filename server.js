@@ -15,6 +15,9 @@ app.use('/settings.js', function(req, res, next) {
 	if(process.env.OPENSHIFT_NODEJS_PORT !== undefined) {
 		res.sendFile(__dirname + '/settings.openshift.js');
 		return;
+	} else if (process.env.LOCAL !== undefined) {
+		res.sendFile(__dirname + '/settings.local.js');
+		return;
 	} else {
 		res.sendFile(__dirname + '/settings.default.js');
 		return;
