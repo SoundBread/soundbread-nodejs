@@ -27,19 +27,21 @@
       .gridBox {
         float: left;
         background-repeat: no-repeat;
-        background-position: 0px 0px;
-        background-image: url(img/SPRITE_button.jpg);
+        background-image: url(img/button.jpg);
         width: 190px;
         height: 190px;
         position: relative;
+	opacity: 0.5;
       }
       .gridBox:hover{
-        background-position: -380px 0px;
-        cursor:pointer;
+        cursor: pointer;
+	opacity: 1;
       }
 
       .gridBox.active{
-        background-position: -190px 0px;
+	-webkit-filter: contrast(50%);
+	filter: contrast(50%);
+	opacity: 1;
       }
 
       .gridBox .label {
@@ -86,31 +88,31 @@
     </div>
 
     <div id="content">
-      <div id="crickets" style="background-image:url(img/SPRITE_cricket.jpg)" class="soundItem gridBox" data-keycode="49">
+      <div id="crickets" style="background-image:url(img/cricket.jpg)" class="soundItem gridBox" data-keycode="49">
         <div class="label">Crickets</div>
       </div>
-      <div id="downer" style="background-image:url(img/SPRITE_sadtrombone.jpg)" class="soundItem gridBox" data-keycode="50">
+      <div id="downer" style="background-image:url(img/sadtrombone.jpg)" class="soundItem gridBox" data-keycode="50">
         <div class="label">Downer</div>
       </div>
-      <div id="rimshot" style="background-image:url(img/SPRITE_rimshot.jpg)" class="soundItem gridBox" data-keycode="51">
+      <div id="rimshot" style="background-image:url(img/rimshot.jpg)" class="soundItem gridBox" data-keycode="51">
         <div class="label">Rimshot</div>
       </div>
-      <div id="gaaay" style="background-image:url(img/SPRITE_gaaay.jpg)" class="soundItem gridBox" data-keycode="52">
+      <div id="gaaay" style="background-image:url(img/gaaay.jpg)" class="soundItem gridBox" data-keycode="52">
         <div class="label">Gaaay</div>
       </div>
-      <div id="shame" style="background-image:url(img/SPRITE_shame.jpg)" class="soundItem gridBox" data-keycode="53">
+      <div id="shame" style="background-image:url(img/shame.jpg)" class="soundItem gridBox" data-keycode="53">
         <div class="label">Shame</div>
       </div>
-      <div id="hodor" style="background-image:url(img/SPRITE_hodor.jpg)" class="soundItem gridBox" data-keycode="54">
+      <div id="hodor" style="background-image:url(img/hodor.jpg)" class="soundItem gridBox" data-keycode="54">
         <div class="label">Hodor</div>
       </div>
-      <div id="brian" style="background-image:url(img/SPRITE_badluckbrian.jpg)" class="soundItem gridBox" data-keycode="55">
+      <div id="brian" style="background-image:url(img/badluckbrian.jpg)" class="soundItem gridBox" data-keycode="55">
         <div class="label">Youlose</div>
       </div>
-      <div id="tim" style="background-image:url(img/SPRITE_tim.jpg)" class="soundItem gridBox" data-keycode="56">
+      <div id="tim" style="background-image:url(img/tim.jpg)" class="soundItem gridBox" data-keycode="56">
         <div class="label">Tim</div>
       </div>
-      <div id="whip" style="background-image:url(img/SPRITE_whip.jpg)" class="soundItem gridBox" data-keycode="57">
+      <div id="whip" style="background-image:url(img/whip.jpg)" class="soundItem gridBox" data-keycode="57">
         <div class="label">Whip</div>
       </div>
     </div>
