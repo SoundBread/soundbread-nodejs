@@ -39,9 +39,9 @@ clients.size = function(){
 // Credit timer
 function createTimeout(socket) {
 	var credittimer = setTimeout(function(){
-		clients[socket.id].credits++;
-		socket.emit('credits', clients[socket.id].credits);
 		if (clients[socket.id].credits < maxcredits) {
+			clients[socket.id].credits++;
+			socket.emit('credits', clients[socket.id].credits);
 			clients[socket.id].credittimer = createTimeout(socket);
 		}
 	}, 10000);
@@ -51,8 +51,7 @@ function createTimeout(socket) {
 // New connection, add to the pool
 io.on("connection", function(socket){
 	clients[socket.id] = {
-		'credits': maxcredits,
-		'credittimer': createTimeout(socket)
+		'credits': maxcredits
 	};
 	console.log("Client joined, now: "+ clients.size());
 	socket.emit('version', pjson.version);
