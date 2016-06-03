@@ -4,6 +4,7 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var pjson = require('./package.json');
 
 // Server settings
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
@@ -51,6 +52,7 @@ io.on("connection", function(socket){
 		'credittimer': createTimeout(socket)
 	};
 	console.log("Client joined, now: "+ clients.size());
+	socket.emit('version', pjson.version);
 	io.sockets.emit('clients', clients.size());
 	socket.emit('credits', clients[socket.id].credits);
 
@@ -79,5 +81,5 @@ io.on("connection", function(socket){
 
 // Start server
 server.listen(port, ipaddress, function(){
-	console.log("Server started listening on port: "+ port);
+	console.log("Server ("+pjson.version+") started listening on port: "+ port);
 });

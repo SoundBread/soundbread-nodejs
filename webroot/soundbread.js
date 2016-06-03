@@ -1,6 +1,7 @@
 function init()
 {
   var preload;
+  var client_version = undefined;
 
   var maxcredits = 5;
   $('#credits').attr('aria-valuemax', maxcredits);
@@ -58,6 +59,15 @@ function init()
     } else {
       $('.soundItem[data-keycode="' + keyCode + '"]').click();
     }
+  });
+
+  socket.on("version", function(version) {
+  	console.log("> version: " + version);
+	console.log("client version: " + client_version);
+	if(client_version != undefined && version != client_version) {
+		location.reload();
+	}
+	client_version = version;
   });
 
   socket.on("clients", function(data){
