@@ -71,17 +71,17 @@ function init()
   });
 
   socket.on("clients", function(data){
-    console.log("> " + data);
+    console.log("> clients: " + data);
     $('#clients').text(data);
   });
 
   socket.on("play", function(data){
-    console.log("> " + data);
+    console.log("> play: " + data);
     play(data);
   });
 
   socket.on("credits", function(data){
-    console.log("Credits changed, now: "+ data);
+    console.log("> credits: "+ data);
     $('#credits').attr('aria-valuenow', data).css('width', 100/maxcredits*data+'%');
   });
 
