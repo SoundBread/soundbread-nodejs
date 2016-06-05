@@ -4,10 +4,5 @@ npm start
 -- Sprite generation with imagemagick --
 Input image:
 Size: 190x190
-Background: white
 
-Note: input is used 3 times:
-
-convert input.jpg -fill white -draw 'fill-opacity 0.5 rectangle 0,0,190,190' \
-    '(' input.jpg -fill black -draw 'fill-opacity 0.5 rectangle 0,0,190,190' ')' \
-	input.jpg +append 'SPRITE_output.jpg'
+convert input.jpg -resize 190x190 output.jpg
