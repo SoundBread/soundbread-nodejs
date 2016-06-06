@@ -5,7 +5,7 @@ function soundLoaded(event) {
 }
 
 function stop() {
-  if (preload != null) {
+  if (preload !== null) {
     preload.close();
   }
   createjs.Sound.stop();
@@ -15,7 +15,7 @@ function play(id) {
   //Play the sound: play (src, interrupt, delay, offset, loop, volume, pan)
   console.log('play: ' + id);
   var instance = createjs.Sound.play(id);
-  if (instance == null || instance.playState == createjs.Sound.PLAY_FAILED) {
+  if (instance === null || instance.playState === createjs.Sound.PLAY_FAILED) {
     console.log('Play failed');
     return;
   }
@@ -82,9 +82,9 @@ function init()
   $(document).keydown(function(e){
     keyCode = '' + e.which;
 
-    if(keyCode == 191) { // '/' or '?'
+    if(keyCode === 191) { // '/' or '?'
       $('.keyhint').show();
-    } else if(keyCode == 27) { // ESC
+    } else if(keyCode === 27) { // ESC
       $('.keyhint').hide();
     } else {
       $('.soundItem[data-keycode="' + keyCode + '"]').click();
@@ -94,7 +94,7 @@ function init()
   socket.on("version", function(version) {
   	console.log("> version: " + version);
 	console.log("client version: " + client_version);
-	if(client_version != undefined && version != client_version) {
+	if(client_version !== undefined && version !== client_version) {
 		location.reload();
 	}
 	client_version = version;
