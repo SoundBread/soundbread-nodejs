@@ -27,7 +27,7 @@ function init()
     {src: "tim.mp3", id: 'tim'},
     {src: "whip.mp3", id: 'whip'},
     {src: "tripod.mp3", id: 'tripod'},
-    {src: "nein.mp3", id: 'nein'}
+    {src: "nein.mp3", id: 'nein'},
     {src: "scream.mp3", id: 'scream'}	
   ];
 
