@@ -25,9 +25,8 @@
   "sub"           : true,
   "undef"         : true,
   "white"         : true,
-//  "-W041"         : false, // this suppresses the warning "Use '===' to compare with '0'."
 
-  "globals": { // global variables from node modules and jquery etc that jshint needs to know about. false means readonly, true means r/w
+  "globals": { /* global variables from node modules and jquery etc that jshint needs to know about. false means readonly, true means r/w */
               "$"              : false,
               "io"             : false,
               "clientSettings" : false,
