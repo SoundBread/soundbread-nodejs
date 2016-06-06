@@ -1,7 +1,36 @@
+function soundLoaded(event) {
+  // Sound is loaded, show button
+  var div = document.getElementById(event.id);
+  // do stuff when loaded
+}
+
+function stop() {
+  if (preload != null) {
+    preload.close();
+  }
+  createjs.Sound.stop();
+}
+
+function play(id) {
+  //Play the sound: play (src, interrupt, delay, offset, loop, volume, pan)
+  console.log('play: ' + id);
+  var instance = createjs.Sound.play(id);
+  if (instance == null || instance.playState == createjs.Sound.PLAY_FAILED) {
+    console.log('Play failed');
+    return;
+  }
+
+  $('#' + id).addClass('active');
+  instance.addEventListener("complete", function (instance) {
+    $('#' + id).removeClass("active");
+  });
+}
+
 function init()
 {
   var preload;
-  var client_version = undefined;
+  var client_version;
+  var keyCode;  
 
   var maxcredits = 5;
   $('#credits').attr('aria-valuemax', maxcredits);
@@ -90,32 +119,4 @@ function init()
     console.log("Error: " + data);
   });
 
-}
-
-function soundLoaded(event) {
-  // Sound is loaded, show button
-  var div = document.getElementById(event.id);
-  // do stuff when loaded
-}
-
-function stop() {
-  if (preload != null) {
-    preload.close();
-  }
-  createjs.Sound.stop();
-}
-
-function play(id) {
-  //Play the sound: play (src, interrupt, delay, offset, loop, volume, pan)
-  console.log('play: ' + id);
-  var instance = createjs.Sound.play(id);
-  if (instance == null || instance.playState == createjs.Sound.PLAY_FAILED) {
-    console.log('Play failed');
-    return;
-  }
-
-  $('#' + id).addClass('active');
-  instance.addEventListener("complete", function (instance) {
-    $('#' + id).removeClass("active");
-  });
 }
