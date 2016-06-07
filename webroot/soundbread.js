@@ -80,7 +80,7 @@ function init()
 
   // Simple keybinding
   $(document).keydown(function(e){
-    keyCode = '' + e.which;
+    keyCode = e.which;
 
     if(keyCode === 191) { // '/' or '?'
       $('.keyhint').show();
