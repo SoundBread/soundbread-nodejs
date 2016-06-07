@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "jshint": "jshint -c .jshintrc --exclude-path .jshintignore ."
+    "jshint": "jshint -c .jshintrc --exclude-path .jshintignore .",
+    "test": "npm run jshint"
   },
   "pre-commit": "jshint",
 
