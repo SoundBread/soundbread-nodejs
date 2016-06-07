@@ -27,11 +27,11 @@ app.use('/settings.js', function(req, res, next) {
 app.use(express.static(__dirname + '/webroot'))
 
 // Clients
-var clients = new Object();
+var clients = {};
 clients.size = function(){
 	var size = 0, key;
 	for (key in clients) {
-			if (clients.hasOwnProperty(key)) size++;
+		if (clients.hasOwnProperty(key)) { size++; }
 	}
 	return size-1;
 }

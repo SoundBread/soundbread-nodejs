@@ -3,11 +3,11 @@ var clientSettings = {
 }
 
 var loc = window.location.href+'';
-if (loc.indexOf('http://') == 0) {
+if (loc.indexOf('http://') === 0) {
 	window.location.href = loc.replace('http://','https://');
 }
 
-if(location.protocol == 'https:') {
+if(location.protocol === 'https:') {
 	clientSettings.wsuri = 'wss://' + location.host
 } else {
 	clientSettings.wsuri = 'ws://' + location.host

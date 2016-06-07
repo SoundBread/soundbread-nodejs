@@ -1,0 +1,36 @@
+{
+  "asi"           : true,
+  "laxbreak"      : true,
+  "bitwise"       : true,
+  "boss"          : false,
+  "browser"	  : true,
+  "curly"         : true,
+  "eqeqeq"        : true,
+  "eqnull"        : false,
+  "evil"          : false,
+  "expr"          : false,
+  "forin"         : false,
+  "immed"         : true,
+  "indent"        : 2,
+  "latedef"       : true,
+  "loopfunc"      : false,
+  "noarg"         : true,
+  "node"          : true,
+  "regexp"        : true,
+  "regexdash"     : false,
+  "strict"        : false,
+  "scripturl"     : true,
+  "shadow"        : false,
+  "supernew"      : false,
+  "sub"           : true,
+  "undef"         : true,
+  "white"         : true,
+
+  "globals": { /* global variables from node modules and jquery etc that jshint needs to know about. false means readonly, true means r/w */
+              "$"              : false,
+              "io"             : false,
+              "clientSettings" : false,
+              "createjs"       : false,
+              "preload"        : false
+  } 
+}
