@@ -1,8 +1,0 @@
-npm install
-npm start
-
--- Sprite generation with imagemagick --
-Input image:
-Size: 190x190
-
-convert input.jpg -resize 190x190 output.jpg
