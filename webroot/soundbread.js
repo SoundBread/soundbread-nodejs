@@ -58,7 +58,8 @@ function init()
     {src: "tripod.mp3", id: 'tripod'},
     {src: "nein.mp3", id: 'nein'},
     {src: "scream.mp3", id: 'scream'},
-    {src: "intel.mp3", id: 'intel'}
+    {src: "intel.mp3", id: 'intel'},
+    {src: "winxp.mp3", id: 'winxp'}
   ];
 
   createjs.Sound.addEventListener("fileload", createjs.proxy(soundLoaded, this));
