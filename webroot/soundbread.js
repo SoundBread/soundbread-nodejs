@@ -94,12 +94,12 @@ function init()
   });
 
   socket.on("version", function(version) {
-  	console.log("> version: " + version);
-	console.log("client version: " + client_version);
-	if(client_version !== undefined && version !== client_version) {
-		location.reload();
-	}
-	client_version = version;
+    console.log("> version: " + version);
+    console.log("client version: " + client_version);
+    if(client_version !== undefined && version !== client_version) {
+      location.reload();
+    }
+    client_version = version;
   });
 
   socket.on("clients", function(data){
