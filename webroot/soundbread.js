@@ -30,7 +30,8 @@ function init()
 {
   var preload;
   var client_version;
-  var keyCode;  
+
+  var keycodes = $("1234567890QWERTYUIOPASDFGHJKLZXCVBNM".split('')).map(function(i, c) { return c.charCodeAt(0); }).get();
 
   var maxcredits = 5;
   $('#credits').attr('aria-valuemax', maxcredits);
@@ -46,43 +47,58 @@ function init()
   var assetsPath = "./audio/";
 
   var sounds = [
-    {src: "crickets.mp3", id: 'crickets'},
-    {src: "downer.mp3", id: 'downer'},
-    {src: "rimshot.mp3", id: 'rimshot'},
-    {src: "gaaay.mp3", id: 'gaaay'},
-    {src: "shame.mp3", id: 'shame'},
-    {src: "hodor.mp3", id: 'hodor'},
-    {src: "youlose.mp3", id: 'brian'},
-    {src: "tim.mp3", id: 'tim'},
-    {src: "whip.mp3", id: 'whip'},
-    {src: "tripod.mp3", id: 'tripod'},
-    {src: "nein.mp3", id: 'nein'},
-    {src: "scream.mp3", id: 'scream'},
-    {src: "intel.mp3", id: 'intel'},
-    {src: "winxp.mp3", id: 'winxp'}
+    {src: "crickets.mp3", img: "cricket.jpg", id: 'crickets', title: 'Crickets'},
+    {src: "downer.mp3", img: "sadtrombone.jpg", id: 'downer', title: 'Downer'},
+    {src: "rimshot.mp3", img: "rimshot.jpg", id: 'rimshot', title: 'Rimshot'},
+    //{src: "gaaay.mp3", img: "gaaay.jpg", id: 'gaaay', title: 'Gaaay'},
+    {src: "shame.mp3", img: "shame.jpg", id: 'shame', title: 'Shame'},
+    {src: "hodor.mp3", img: "hodor.jpg", id: 'hodor', title: 'Hodor'},
+    {src: "youlose.mp3", img: "badluckbrian.jpg", id: 'brian', title: 'Youlose'},
+    {src: "tim.mp3", img: "tim.jpg", id: 'tim', title: 'Tim'},
+    {src: "whip.mp3", img: "whip.jpg", id: 'whip', title: 'Whip'},
+    {src: "tripod.mp3", img: "tripod.jpg", id: 'tripod', title: 'Tripod'},
+    {src: "nein.mp3", img: "nein.jpg", id: 'nein', title: 'Nein'},
+    {src: "scream.mp3", img: "scream.jpg", id: 'scream', title: 'Scream'},
+    {src: "intel.mp3", img: "intel.jpg", id: 'intel', title: 'Intel'},
+    {src: "winxp.mp3", img: "winxp.jpg", id: 'winxp', title: 'Windows XP'}
   ];
 
   createjs.Sound.addEventListener("fileload", createjs.proxy(soundLoaded, this));
   createjs.Sound.registerSounds(sounds, assetsPath);
 
-  $(".soundItem").click(function() {
-    var self = this;
-    var id = $(self).attr('id');
-    console.log("< " + id);
+  $(sounds).each(function(i, sound) {
+    var keycode = keycodes[i];
 
-    socket.emit('play',id);
-  });
+    var labeldiv = $('<div>');
+    labeldiv.attr('class', 'label');
+    labeldiv.append(sound.title);
 
-  $('.soundItem[data-keycode]').each(function(i, elm) {
-    var hintkey = String.fromCharCode($(elm).attr('data-keycode'));
-    var hintdiv = $('<div class="keyhint">'+hintkey+'</div>');
+    var sounddiv = $('<div>');
+    sounddiv.attr('id', sound.id);
+    sounddiv.attr('style', 'background-image:url(img/' + sound.img + ')');
+    sounddiv.attr('class', 'soundItem gridBox');
+    sounddiv.attr('data-keycode', keycode);
+    sounddiv.append(labeldiv);
+    $('#content').append(sounddiv);
+
+    var hintkey = String.fromCharCode(keycode);
+    var hintdiv = $('<div class="keyhint">' + hintkey + '</div>');
     hintdiv.hide();
-    $(elm).append(hintdiv);
+    sounddiv.append(hintdiv);
+
+    sounddiv.click(function() {
+      var self = this;
+      var id = $(self).attr('id');
+      console.log("< " + id);
+
+      socket.emit('play',id);
+    });
+
   });
 
   // Simple keybinding
   $(document).keydown(function(e){
-    keyCode = e.which;
+    var keyCode = e.which;
 
     if(keyCode === 191) { // '/' or '?'
       $('.keyhint').show();
@@ -94,12 +110,12 @@ function init()
   });
 
   socket.on("version", function(version) {
-  	console.log("> version: " + version);
-	console.log("client version: " + client_version);
-	if(client_version !== undefined && version !== client_version) {
-		location.reload();
-	}
-	client_version = version;
+    console.log("> version: " + version);
+    console.log("client version: " + client_version);
+    if(client_version !== undefined && version !== client_version) {
+      location.reload();
+    }
+    client_version = version;
   });
 
   socket.on("clients", function(data){
