@@ -5,12 +5,15 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var pjson = require('./package.json');
+var cors = require('cors');
+var sounds = require('./core/sound/sounds');
 
 // Server settings
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var maxcredits = 5;
 
+// Serve settings file
 app.use('/settings.js', function(req, res, next) {
 	if(process.env.OPENSHIFT_NODEJS_PORT !== undefined) {
 		res.sendFile(__dirname + '/settings.openshift.js');
@@ -24,14 +27,24 @@ app.use('/settings.js', function(req, res, next) {
 	}
 	next();
 });
-app.use(express.static(__dirname + '/webroot'))
+
+// API
+app.get('/api/sounds', cors(), function(req,res){
+	res.json(sounds);
+});
+
+// Serve static files
+app.use(express.static(__dirname + '/webroot'));
 
 // Clients
 var clients = {};
 clients.size = function(){
 	var size = 0, key;
 	for (key in clients) {
-		if (clients.hasOwnProperty(key)) { size++; }
+			if (clients.hasOwnProperty(key))
+			{
+				size++;
+			}
 	}
 	return size-1;
 }

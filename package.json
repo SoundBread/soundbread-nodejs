@@ -1,6 +1,6 @@
 {
   "name": "soundbread-nodejs",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Soundbread NodeJS",
   "main": "server.js",
   "scripts": {
@@ -9,7 +9,6 @@
     "test": "npm run jshint"
   },
   "pre-commit": "jshint",
-
   "repository": {
     "type": "git",
     "url": "https://github.com/SoundBread/soundbread-nodejs"
@@ -20,6 +19,7 @@
     "url": "https://github.com/SoundBread/soundbread-nodejs/issues"
   },
   "dependencies": {
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "socket.io": "^1.4.6",
     "ws": "^1.1.0"
