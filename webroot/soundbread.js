@@ -67,6 +67,9 @@ function init()
     var sounddiv = $('<div>');
     sounddiv.attr('id', sound.id);
     sounddiv.attr('style', 'background-image:url(img/' + sound.img + ')');
+	if(sound.hidden) {
+		sounddiv.attr('style', sounddiv.attr('style') + '; display: none');
+	}
     sounddiv.attr('class', 'soundItem gridBox');
     sounddiv.attr('data-keycode', keycode);
     sounddiv.append(labeldiv);
