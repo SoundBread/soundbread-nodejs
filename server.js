@@ -82,8 +82,9 @@ io.on("connection", function(socket){
 	// Client wants to play audio
 	socket.on("play", function(data){
 		if (clients[socket.id].credits > 0) {
-			console.log("Playing audio: "+data);
-			io.sockets.emit('play', data);
+			console.log("Playing audio: "+data+" by " + clients[socket.id].name);
+			var playData = {audio: data, user: clients[socket.id].name};
+			io.sockets.emit('play', playData);
 			clients[socket.id].credits--;
 			socket.emit('credits', clients[socket.id].credits);
 			clearTimeout(clients[socket.id].credittimer);
@@ -91,6 +92,12 @@ io.on("connection", function(socket){
 		} else {
 			socket.emit('errormsg','Not enough credits');
 		}
+	});
+
+	socket.on("name", function(name) {
+		console.log("User " + socket.id + " changed name from " + clients[socket.id].name + " to " + name);
+		clients[socket.id].name = name;
+		io.sockets.emit('name', name);
 	});
 });
 
