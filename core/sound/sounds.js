@@ -14,6 +14,7 @@ sounds = [
   {src: "nein.mp3", img: "nein.jpg", id: 'nein', title: 'Nein'},
   {src: "scream.mp3", img: "scream.jpg", id: 'scream', title: 'Scream'},
   {src: "intel.mp3", img: "intel.jpg", id: 'intel', title: 'Intel'},
-  {src: "winxp.mp3", img: "winxp.jpg", id: 'winxp', title: 'Windows XP'}
+  {src: "winxp.mp3", img: "winxp.jpg", id: 'winxp', title: 'Windows XP'},
+  {src: "turks.mp3", img: "turks.jpg", id: 'turks', title: 'Turks Fruit'}
 ];
 module.exports = sounds;
