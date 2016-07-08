@@ -67,9 +67,9 @@ function init()
     var sounddiv = $('<div>');
     sounddiv.attr('id', sound.id);
     sounddiv.attr('style', 'background-image:url(img/' + sound.img + ')');
-	if(sound.hidden) {
-		sounddiv.attr('style', sounddiv.attr('style') + '; display: none');
-	}
+    if(sound.hidden) {
+      sounddiv.attr('style', sounddiv.attr('style') + '; display: none');
+    }
     sounddiv.attr('class', 'soundItem gridBox');
     sounddiv.attr('data-keycode', keycode);
     sounddiv.append(labeldiv);
@@ -94,6 +94,10 @@ function init()
   $(document).keydown(function(e){
     var keyCode = e.which;
 
+    if(["INPUT"].indexOf(document.activeElement.tagName) !== -1) {
+      return;
+    }
+
     if(keyCode === 191) { // '/' or '?'
       $('.keyhint').show();
     } else if(keyCode === 27) { // ESC
@@ -101,6 +105,11 @@ function init()
     } else {
       $('.soundItem[data-keycode="' + keyCode + '"]').click();
     }
+  });
+
+  socket.on("reconnect", function() {
+    var userid = localStorage.getItem('userid');
+    socket.emit('name', userid);
   });
 
   socket.on("version", function(version) {
@@ -118,8 +127,8 @@ function init()
   });
 
   socket.on("play", function(data){
-    console.log("> play: " + data);
-    play(data);
+    console.log("> play: " + data.audio + " (" + data.user + ")");
+    play(data.audio);
   });
 
   socket.on("credits", function(data){
@@ -131,4 +140,16 @@ function init()
     console.log("Error: " + data);
   });
 
+  document.updateName = function(name) {
+    localStorage.setItem('userid', name);
+    console.log("> name: " + name);
+    socket.emit('name', name);
+  }
+
+  var userid = localStorage.getItem('userid');
+  if(userid === null) {
+    userid = "Gebruiker "+Math.floor(Math.random()*10000+9999);
+  }
+  $('#userid').val(userid);
+  document.updateName(userid);
 }
