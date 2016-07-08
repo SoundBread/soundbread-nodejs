@@ -17,5 +17,6 @@ sounds = [
   {src: "turks.mp3", img: "turks.jpg", id: 'turks', title: 'Turks Fruit'},
   // Keep hidden: true at end to not show hints in shortcuts
   {src: "gaaay.mp3", img: "gaaay.jpg", id: 'gaaay', title: 'Gaaay', hidden: true},
+  {src: "pieper.mp3", img: "", id: 'pieper', title: 'Pieper', hidden: true},
 ];
 module.exports = sounds;
