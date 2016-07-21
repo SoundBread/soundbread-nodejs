@@ -16,8 +16,8 @@ sounds = [
   {src: "winxp.mp3", img: "winxp.jpg", id: 'winxp', title: 'Windows XP'},
   {src: "turks.mp3", img: "turks.jpg", id: 'turks', title: 'Turks Fruit'},
   {src: "dramatic.mp3", img: "dramatic.jpg", id: 'dramatic', title: 'Dramatic'},
-  {src: "maniacal.mp3", img: "maniacal.jpg", id: 'maniacal', title: 'Maniacal'},
   // Keep hidden: true at end to not show hints in shortcuts
+  {src: "maniacal.mp3", img: "maniacal.jpg", id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: "gaaay.mp3", img: "gaaay.jpg", id: 'gaaay', title: 'Gaaay', hidden: true},
   {src: "pieper.mp3", img: "pieper.jpg", id: 'pieper', title: 'Pieper', hidden: true},
 ];
