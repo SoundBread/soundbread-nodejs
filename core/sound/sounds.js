@@ -23,6 +23,7 @@ sounds = [
   {src: "snoop.mp3", img: "snoop.jpg", id: 'snoop', title: 'Snoop'},
   {src: "giggity.mp3", img: "giggity.jpg", id: 'giggity', title: "Giggity"},
   {src: "sorry.mp3", img: "sorry.jpg", id: 'sorry', title: "Sorry"},
+  {src: "20thcentury.mp3", img: "20thcentury.jpg", id: '20thcentury', title: "20th Century Fox", cost: 3},
   // Keep hidden: true at end to not show hints in shortcuts
   {src: "maniacal.mp3", img: "maniacal.jpg", id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: "gaaay.mp3", img: "gaaay.jpg", id: 'gaaay', title: 'Gaaay', hidden: true},
