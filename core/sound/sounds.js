@@ -9,12 +9,12 @@ sounds = [
   {src: "youlose.mp3", img: "badluckbrian.jpg", id: 'brian', title: 'Youlose'},
   {src: "tim.mp3", img: "tim.jpg", id: 'tim', title: 'Tim'},
   {src: "whip.mp3", img: "whip.jpg", id: 'whip', title: 'Whip'},
-  {src: "tripod.mp3", img: "tripod.jpg", id: 'tripod', title: 'Tripod'},
+  {src: "tripod.mp3", img: "tripod.jpg", id: 'tripod', title: 'Tripod', cost: 2},
   {src: "nein.mp3", img: "nein.jpg", id: 'nein', title: 'Nein'},
   {src: "scream.mp3", img: "scream.jpg", id: 'scream', title: 'Scream'},
   {src: "intel.mp3", img: "intel.jpg", id: 'intel', title: 'Intel'},
   {src: "winxp.mp3", img: "winxp.jpg", id: 'winxp', title: 'Windows XP'},
-  {src: "turks.mp3", img: "turks.jpg", id: 'turks', title: 'Turks Fruit'},
+  {src: "turks.mp3", img: "turks.jpg", id: 'turks', title: 'Turks Fruit', cost: 2},
   {src: "dramatic.mp3", img: "dramatic.jpg", id: 'dramatic', title: 'Dramatic'},
   {src: "wrong.mp3", img: "wrong.jpg", id: 'wrong', title: 'Wrong'},
   {src: "michael.mp3", img: "michael.jpg", id: 'michael', title: 'Michael'},
@@ -26,6 +26,6 @@ sounds = [
   // Keep hidden: true at end to not show hints in shortcuts
   {src: "maniacal.mp3", img: "maniacal.jpg", id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: "gaaay.mp3", img: "gaaay.jpg", id: 'gaaay', title: 'Gaaay', hidden: true},
-  {src: "pieper.mp3", img: "pieper.jpg", id: 'pieper', title: 'Pieper', hidden: true},
+  {src: "pieper.mp3", img: "pieper.jpg", id: 'pieper', title: 'Pieper', hidden: true, cost: 5},
 ];
 module.exports = sounds;
