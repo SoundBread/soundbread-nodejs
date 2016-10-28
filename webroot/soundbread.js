@@ -128,8 +128,10 @@ function init()
 
   socket.on("play", function(data){
     console.log("> play: " + data.audio + " (" + data.user + ")");
-    play(data.audio);
-	document.toast('Play: ' + data.audio + ' (' + data.user + ')');
+
+    var sound = sounds.filter(function(x) { return x.id === data.audio; })[0];
+    play(sound.id);
+    document.toast(sound.title + ' - ' + data.user);
   });
 
   socket.on("credits", function(data){
@@ -139,13 +141,13 @@ function init()
 
   socket.on("errormsg", function(data){
     console.log("Error: " + data);
-	document.toast(data);
+    document.toast(data);
   });
 
   document.toast = function(text) {
-	var toast = $('<div class="toast" style="display:none">').text(text);
-	$("#toastcontainer").prepend(toast);
-	toast.fadeIn(400).delay(2000).fadeOut(400);
+    var toast = $('<div class="toast" style="display:none">').text(text);
+    $("#toastcontainer").prepend(toast);
+    toast.fadeIn(400).delay(2000).fadeOut(400);
   }
 
   document.updateName = function(name) {
