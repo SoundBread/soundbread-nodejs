@@ -81,11 +81,14 @@ io.on("connection", function(socket){
 
 	// Client wants to play audio
 	socket.on("play", function(data){
-		if (clients[socket.id].credits > 0) {
+		var cost = sounds.filter(function(x) { return x.id === data; })[0].cost;
+		if(cost === undefined) { cost = 1; }
+
+		if (clients[socket.id].credits >= cost) {
 			console.log("Playing audio: "+data+" by " + clients[socket.id].name);
 			var playData = {audio: data, user: clients[socket.id].name};
 			io.sockets.emit('play', playData);
-			clients[socket.id].credits--;
+			clients[socket.id].credits -= cost;
 			socket.emit('credits', clients[socket.id].credits);
 			clearTimeout(clients[socket.id].credittimer);
 			clients[socket.id].credittimer = createTimeout(socket);
