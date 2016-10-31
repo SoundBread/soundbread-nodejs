@@ -1,5 +1,6 @@
 'use strict';
 
+require('console-stamp')(console, 'HH:MM:ss.l');
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
@@ -100,7 +101,7 @@ function useCredits(socket, amount) {
 // New connection, add to the pool
 io.on("connection", function(socket){
 	clients[socket.id] = {};
-	console.log("Client joined, now: "+ clients.size());
+	console.info("Client joined, now: "+ clients.size());
 	socket.emit('version', pjson.version);
 	io.sockets.emit('clients', clients.size());
 
@@ -108,7 +109,7 @@ io.on("connection", function(socket){
 	socket.on("disconnect", function(){
 		clearTimeout(clients[socket.id].credittimer);
 		delete clients[socket.id];
-		console.log("Client left, now: "+clients.size());
+		console.info("Client left, now: "+clients.size());
 		io.sockets.emit('clients', clients.size());
 	});
 
@@ -142,5 +143,5 @@ io.on("connection", function(socket){
 
 // Start server
 server.listen(port, ipaddress, function(){
-	console.log("Server ("+pjson.version+") started listening on port: "+ port);
+	console.info("Server ("+pjson.version+") started listening on port: "+ port);
 });
