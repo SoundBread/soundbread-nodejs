@@ -62,7 +62,11 @@ function init()
 
     var labeldiv = $('<div>');
     labeldiv.attr('class', 'label');
-    labeldiv.append(sound.title);
+    labeldiv.text(sound.title);
+
+    var costdiv = $('<div>');
+    costdiv.attr('class', 'cost');
+    costdiv.text(sound.cost === undefined ? 1 : sound.cost);
 
     var sounddiv = $('<div>');
     sounddiv.attr('id', sound.id);
@@ -73,6 +77,7 @@ function init()
     sounddiv.attr('class', 'soundItem gridBox');
     sounddiv.attr('data-keycode', keycode);
     sounddiv.append(labeldiv);
+    sounddiv.append(costdiv);
     $('#content').append(sounddiv);
 
     var hintkey = String.fromCharCode(keycode);
@@ -100,8 +105,12 @@ function init()
 
     if(keyCode === 191) { // '/' or '?'
       $('.keyhint').show();
+      $('.label').show();
+      $('.cost').show();
     } else if(keyCode === 27) { // ESC
       $('.keyhint').hide();
+      $('.label').hide();
+      $('.cost').hide();
     } else {
       $('.soundItem[data-keycode="' + keyCode + '"]').click();
     }
