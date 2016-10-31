@@ -7,15 +7,20 @@ var io = require('socket.io')(server);
 var pjson = require('./package.json');
 var cors = require('cors');
 var sounds = require('./core/sound/sounds');
+var Store = require('server-store');
 
 // Server settings
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var maxcredits = 5;
+var creditTimeout = 10 * 1000; // in ms
+
+// Persistent data
+var creditStore = new Store('SoundBread', 'creditStore'); // (AppName, StorageName)
 
 // Serve settings file
 app.use('/settings.js', function(req, res, next) {
-	if(process.env.OPENSHIFT_NODEJS_PORT !== undefined) {
+	if (process.env.OPENSHIFT_NODEJS_PORT !== undefined) {
 		res.sendFile(__dirname + '/settings.openshift.js');
 		return;
 	} else if (process.env.LOCAL !== undefined) {
@@ -52,24 +57,52 @@ clients.size = function(){
 // Credit timer
 function createTimeout(socket) {
 	var credittimer = setTimeout(function(){
-		if (clients[socket.id].credits < maxcredits) {
-			clients[socket.id].credits++;
-			socket.emit('credits', clients[socket.id].credits);
-			clients[socket.id].credittimer = createTimeout(socket);
+		var hiddenid = clients[socket.id].hiddenid;
+		var credits = creditStore.getItem(hiddenid);
+		if (credits < maxcredits) {
+			credits++;
+			creditStore.setItem(hiddenid, credits);
+			socket.emit('credits', credits);
+			console.log("User " + socket.id + " now has " + credits + " credits");
 		}
-	}, 10000);
+		createTimeout(socket);
+	}, creditTimeout);
+	clients[socket.id].credittimer = credittimer;
 	return credittimer;
+}
+
+function retreiveCredits(socket) {
+	var hiddenid = clients[socket.id].hiddenid;
+	var credits = creditStore.getItem(hiddenid);
+	console.log("User " + socket.id + " has " + credits + " credits.");
+	if (credits === undefined) {
+		credits = maxcredits;
+		creditStore.setItem(hiddenid, credits);
+		console.log("Giving user " + socket.id + " initial amount of credits: " + maxcredits);
+	}
+	socket.emit('credits', credits);
+}
+
+// returns true if enough credits are available
+function useCredits(socket, amount) {
+	var hiddenid = clients[socket.id].hiddenid;
+	var credits = creditStore.getItem(hiddenid);
+	if (credits !== undefined && credits >= amount) {
+		credits -= amount;
+		creditStore.setItem(hiddenid, credits);
+		socket.emit('credits', credits);
+		console.log("User " + socket.id + " now has " + credits + " credits");
+		return true;
+	}
+	return false;
 }
 
 // New connection, add to the pool
 io.on("connection", function(socket){
-	clients[socket.id] = {
-		'credits': maxcredits
-	};
+	clients[socket.id] = {};
 	console.log("Client joined, now: "+ clients.size());
 	socket.emit('version', pjson.version);
 	io.sockets.emit('clients', clients.size());
-	socket.emit('credits', clients[socket.id].credits);
 
 	// Connection closed, remove from pool
 	socket.on("disconnect", function(){
@@ -82,16 +115,12 @@ io.on("connection", function(socket){
 	// Client wants to play audio
 	socket.on("play", function(data){
 		var cost = sounds.filter(function(x) { return x.id === data; })[0].cost;
-		if(cost === undefined) { cost = 1; }
+		if (cost === undefined) { cost = 1; }
 
-		if (clients[socket.id].credits >= cost) {
+		if (useCredits(socket, cost)) {
 			console.log("Playing audio: "+data+" by " + clients[socket.id].name);
 			var playData = {audio: data, user: clients[socket.id].name};
 			io.sockets.emit('play', playData);
-			clients[socket.id].credits -= cost;
-			socket.emit('credits', clients[socket.id].credits);
-			clearTimeout(clients[socket.id].credittimer);
-			clients[socket.id].credittimer = createTimeout(socket);
 		} else {
 			socket.emit('errormsg','Not enough credits');
 		}
@@ -101,6 +130,13 @@ io.on("connection", function(socket){
 		console.log("User " + socket.id + " changed name from " + clients[socket.id].name + " to " + name);
 		clients[socket.id].name = name;
 		io.sockets.emit('name', name);
+	});
+
+	socket.on("hiddenid", function(hiddenid) {
+		console.log("User " + socket.id + " set hiddenid from " + clients[socket.id].hiddenid + " to " + hiddenid);
+		clients[socket.id].hiddenid = hiddenid;
+		retreiveCredits(socket);
+		createTimeout(socket);
 	});
 });
 

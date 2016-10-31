@@ -108,6 +108,9 @@ function init()
   });
 
   socket.on("reconnect", function() {
+    var hiddenid = localStorage.getItem('hiddenid');
+    socket.emit('hiddenid', hiddenid);
+
     var userid = localStorage.getItem('userid');
     socket.emit('name', userid);
   });
@@ -155,6 +158,17 @@ function init()
     console.log("> name: " + name);
     socket.emit('name', name);
   }
+
+  var hiddenid = localStorage.getItem('hiddenid');
+  if(hiddenid === null) {
+    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    hiddenid = "";
+    for(var i=0; i<32; ++i) {
+      hiddenid += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    localStorage.setItem('hiddenid', hiddenid);
+  }
+  socket.emit('hiddenid', hiddenid);
 
   var userid = localStorage.getItem('userid');
   if(userid === null) {
