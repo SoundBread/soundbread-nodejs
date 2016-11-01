@@ -115,12 +115,14 @@ io.on("connection", function(socket){
 
 	// Client wants to play audio
 	socket.on("play", function(data){
-		var cost = sounds.filter(function(x) { return x.id === data; })[0].cost;
+		clients[socket.id].hiddenid = data.hiddenid;
+
+		var cost = sounds.filter(function(x) { return x.id === data.soundId; })[0].cost;
 		if (cost === undefined) { cost = 1; }
 
 		if (useCredits(socket, cost)) {
-			console.log("Playing audio: "+data+" by " + clients[socket.id].name);
-			var playData = {audio: data, user: clients[socket.id].name};
+			console.log("Playing audio: "+data.soundId+" by " + clients[socket.id].name);
+			var playData = {audio: data.soundId, user: clients[socket.id].name};
 			io.sockets.emit('play', playData);
 		} else {
 			socket.emit('errormsg','Not enough credits');
