@@ -27,6 +27,7 @@ sounds = [
   {src: "jurassic.mp3", img: "jurassic.jpg", id: 'jurassic', title: "Jurassic Park", cost: 3},
   {src: "biem.mp3", img: "biem.jpg", id: 'biem', title: "BIEM!!!"},
   {src: "icq.mp3", img: "icq.jpg", id: 'icq', title: "Uh-oh", cost: 0},
+  {src: "bert.mp3", img: "bert.png", id: 'bert', title: "Heee Bert!"},
   // Keep hidden: true at end to not show hints in shortcuts
   {src: "maniacal.mp3", img: "maniacal.jpg", id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: "gaaay.mp3", img: "gaaay.jpg", id: 'gaaay', title: 'Gaaay', hidden: true},
