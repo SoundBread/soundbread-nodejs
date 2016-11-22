@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/SoundBread/soundbread-nodejs.svg?branch=master)](https://travis-ci.org/SoundBread/soundbread-nodejs)
+[![Dependencies](https://david-dm.org/SoundBread/soundbread-nodejs/status.svg)](https://david-dm.org/SoundBread/soundbread-nodejs/)
+[![Dev Dependencies](https://david-dm.org/SoundBread/soundbread-nodejs/dev-status.svg)](https://david-dm.org/SoundBread/soundbread-nodejs?type=dev)
 
 ## Getting started
 ```
