@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "jshint": "jshint -c .jshintrc --exclude-path .jshintignore .",
-	"imgsize": "identify -format '%i is %[fx:w]x%[fx:h] %C\n' webroot/img/*.* | grep -v '190x190 JPEG'; test $? -eq 1",
+	"imgsize": "FAIL=0; for FILE in webroot/img/*; do identify -format '%i is %[fx:w]x%[fx:h] %C' \"$FILE\" | grep -v '190x190 JPEG' && FAIL=1; done; exit $FAIL",
     "test": "npm run jshint && npm run imgsize"
   },
   "pre-commit": [
