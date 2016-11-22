@@ -27,8 +27,7 @@
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "server-store": "^1.0.2",
-    "socket.io": "^1.4.6",
-    "ws": "^1.1.0"
+    "socket.io": "^1.4.6"
   },
   "devDependencies": {
     "jshint": "~2.9.2",
