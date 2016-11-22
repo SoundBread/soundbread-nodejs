@@ -6,12 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "jshint": "jshint -c .jshintrc --exclude-path .jshintignore .",
-	"imgsize": "FAIL=0; for FILE in webroot/img/*; do identify -format '%i is %[fx:w]x%[fx:h] %C' \"$FILE\" | grep -v '190x190 JPEG' && FAIL=1; done; exit $FAIL",
-    "test": "npm run jshint && npm run imgsize"
+    "test": "npm run jshint && ./scripts/test-images.sh"
   },
   "pre-commit": [
-    "jshint",
-    "imgsize"
+    "test"
   ],
   "repository": {
     "type": "git",
