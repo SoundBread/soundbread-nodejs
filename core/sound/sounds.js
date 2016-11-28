@@ -29,6 +29,7 @@ sounds = [
   {src: "icq.mp3", img: "icq.jpg", id: 'icq', title: "Uh-oh", cost: 0},
   {src: "bert.mp3", img: "bert.jpg", id: 'bert', title: "Heee Bert!"},
   {src: "hahabier.mp3", img: "hahabier.jpg", id: 'hahabier', title: "Ha Ha bier!"},
+  {src: "tirol.mp3", img: "tirol.jpg", id: 'tirol', title: "Absolut Tirol"},
   // Keep hidden: true at end to not show hints in shortcuts
   {src: "maniacal.mp3", img: "maniacal.jpg", id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: "gaaay.mp3", img: "gaaay.jpg", id: 'gaaay', title: 'Gaaay', hidden: true},
