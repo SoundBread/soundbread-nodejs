@@ -105,6 +105,12 @@ function init()
     var keyCode = e.which;
 
     if(["INPUT"].indexOf(document.activeElement.tagName) !== -1) {
+      // Skip if typing in input element
+      return;
+    }
+
+    if(e.altKey || e.ctrlKey) {
+      // Skip if a modifier is active, to prevent capturing browser shortkeys
       return;
     }
 
