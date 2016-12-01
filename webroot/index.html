@@ -118,6 +118,42 @@
         display: none;
       }
 
+      #ytplayer {
+        display: none;
+      }
+
+      #ytpopup {
+        display: none;
+        position: fixed;
+        background-color: white;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 178px;
+        margin-top: -200px;
+        margin-left: -160px;
+        padding: 0 10px 10px;
+      }
+
+      #ytpopup h1 {
+        background-color: red;
+        margin: 0 -10px 10px;
+        padding: 0 10px;
+      }
+
+      #ytpopup label {
+        width: 30%;
+        text-align: right;
+      }
+
+      #ytpopup label + input {
+        width: 60%;
+        margin: 0;
+      }
+
+      #ytpopup input + input {
+        margin: 0 auto 0 10px;
+      }
     </style>
   </head>
   <body>
@@ -157,5 +193,16 @@
 
     <div id="toastcontainer"></div>
 
+    <div id="ytpopup" style="border: solid black 1px">
+      <h1>Youtube</h1>
+      <label>ID:</label> <input type="text" id="ytId" value="7jiaU0xbOKs"/>
+      <label>Start (sec):</label> <input type="number" id="ytStart" value="31"/>
+      <label>End (sec):</label> <input type="number" id="ytEnd" value="46"/>
+      <input type="button" value="Test" onClick="playYoutube($('#ytId').val(), $('#ytStart').val(), $('#ytEnd').val())"/>
+      <input type="button" value="Send" onClick="sendYoutube($('#ytId').val(), $('#ytStart').val(), $('#ytEnd').val()); $('#ytpopup').hide()"/>
+      <div id="ytstatus">Status info</div>
+    </div>
+
+    <div id="ytplayer"></div>
   </body>
 </html>

@@ -15,6 +15,7 @@ var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var maxcredits = 5;
 var creditTimeout = 10 * 1000; // in ms
+var youtubeCost = 1;
 
 // Persistent data
 var creditStore = new Store('SoundBread', 'creditStore'); // (AppName, StorageName)
@@ -124,6 +125,19 @@ io.on("connection", function(socket){
 			console.log("Playing audio: "+data.soundId+" by " + clients[socket.id].name);
 			var playData = {audio: data.soundId, user: clients[socket.id].name};
 			io.sockets.emit('play', playData);
+		} else {
+			socket.emit('errormsg','Not enough credits');
+		}
+	});
+
+	socket.on("youtube", function(data){
+		clients[socket.id].hiddenid = data.hiddenid;
+
+		var cost = youtubeCost;
+		if(useCredits(socket, cost)) {
+			console.log("Playing youtube: "+data.youtubeId+" from "+data.start+" to "+data.end+" by " + clients[socket.id].name);
+			var playData = {id: data.youtubeId, start: data.start, end: data.end, user: clients[socket.id].name};
+			io.sockets.emit('youtube', playData);
 		} else {
 			socket.emit('errormsg','Not enough credits');
 		}

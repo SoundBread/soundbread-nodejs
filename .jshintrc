@@ -3,7 +3,7 @@
   "laxbreak"      : true,
   "bitwise"       : true,
   "boss"          : false,
-  "browser"	  : true,
+  "browser"       : true,
   "curly"         : true,
   "eqeqeq"        : true,
   "eqnull"        : false,
@@ -31,6 +31,7 @@
               "io"             : false,
               "clientSettings" : false,
               "createjs"       : false,
-              "preload"        : false
+              "preload"        : false,
+              "YT"             : false
   } 
 }

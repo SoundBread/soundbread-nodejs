@@ -28,6 +28,7 @@ function play(id) {
 
 var userid;
 var hiddenid;
+var ytplayer;
 
 function init()
 {
@@ -122,6 +123,8 @@ function init()
       $('.keyhint').hide();
       $('.label').hide();
       $('.cost').hide();
+    } else if(keyCode === 192) { // `/~
+      $('#ytpopup').show();
     } else {
       $('.soundItem[data-keycode="' + keyCode + '"]').click();
     }
@@ -177,6 +180,55 @@ function init()
     console.log("> name: " + name);
     socket.emit('name', name);
   }
+
+  // YouTube
+
+  var getYoutubeStatusDescription = function(id) {
+    switch(id) {
+      case -1: return 'unstarted';
+      case 0: return 'ended';
+      case 1: return 'playing';
+      case 2: return 'paused';
+      case 3: return 'buffering';
+      case 4: return 'video cued';
+    }
+  }
+
+  var onPlayerStateChange = function(event) {
+    $('#ytstatus').text(getYoutubeStatusDescription(event.data));
+  };
+
+  window.onYouTubeIframeAPIReady = function() {
+    ytplayer = new YT.Player('ytplayer', {
+      'height': '390',
+      'width': '640',
+      playerVars: { 'autoplay': 1, 'controls': 1, 'showinfo': 0 },
+      events: {
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  document.sendYoutube = function(id, start, end) {
+    console.log("> youtube " + id + ", " + start + ", " + end);
+    socket.emit('youtube', {youtubeId: id, start: start, end: end, hiddenid: hiddenid});
+  };
+
+  socket.on("youtube", function(data){
+    console.log("> youtube: " + data.id + " from " + data.start + " to " + data.end);
+    document.playYoutube(data.id, data.start, data.end);
+  });
+
+  document.playYoutube = function(id, start, end){
+    ytplayer.loadVideoById({videoId: id, startSeconds: start, endSeconds: end});
+  };
+
+  // End Youtube
 
   hiddenid = localStorage.getItem('hiddenid');
   if(hiddenid === null) {
