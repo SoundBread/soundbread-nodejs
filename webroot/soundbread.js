@@ -183,6 +183,8 @@ function init()
 
   // YouTube
 
+  var ytToastQueue = [];
+
   var getYoutubeStatusDescription = function(id) {
     switch(id) {
       case -1: return 'unstarted';
@@ -196,6 +198,22 @@ function init()
 
   var onPlayerStateChange = function(event) {
     $('#ytstatus').text(getYoutubeStatusDescription(event.data));
+
+    // When the player starts playing
+    if(event.data === 1) {
+      var vd = ytplayer.getVideoData();
+      // Check available toast info
+      for(var i=0; i<ytToastQueue.length; ++i) {
+        // for a matching video id
+        if(ytToastQueue[i].id === vd.video_id) {
+          var tis = ytToastQueue.splice(i, i+1);
+          var ti = tis[0];
+          // Show a toast with the video title available when video is loaded
+          document.toast(vd.title + ' - ' + ti.user);
+        }
+      }
+    }
+
   };
 
   window.onYouTubeIframeAPIReady = function() {
@@ -222,6 +240,8 @@ function init()
   socket.on("youtube", function(data){
     console.log("> youtube: " + data.id + " from " + data.start + " to " + data.end);
     document.playYoutube(data.id, data.start, data.end);
+
+    ytToastQueue.push({id: data.id, user: data.user});
   });
 
   document.playYoutube = function(id, start, end){
