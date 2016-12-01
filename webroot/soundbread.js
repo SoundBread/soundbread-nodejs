@@ -124,7 +124,11 @@ function init()
       $('.label').hide();
       $('.cost').hide();
     } else if(keyCode === 192) { // `/~
-      $('#ytpopup').show();
+      if(localStorage.getItem('youtube-disabled') !== 'true') {
+        $('#ytpopup').show();
+      } else {
+        document.toast('Enable YouTube first');
+      }
     } else {
       $('.soundItem[data-keycode="' + keyCode + '"]').click();
     }
@@ -165,7 +169,7 @@ function init()
   });
 
   socket.on("errormsg", function(data){
-    console.log("Error: " + data);
+    console.error(data);
     document.toast(data);
   });
 
@@ -227,10 +231,13 @@ function init()
     });
   }
 
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  if(localStorage.getItem('youtube-disabled') !== 'true') {
+    $('#ytEnabled').prop('checked', true);
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
 
   document.sendYoutube = function(id, start, end) {
     console.log("> youtube " + id + ", " + start + ", " + end);
@@ -247,6 +254,11 @@ function init()
   document.playYoutube = function(id, start, end){
     ytplayer.loadVideoById({videoId: id, startSeconds: start, endSeconds: end});
   };
+
+  window.ytSetEnabled = function(enabled) {
+    localStorage.setItem('youtube-disabled', !enabled);
+    document.location = document.location;
+  }
 
   // End Youtube
 
