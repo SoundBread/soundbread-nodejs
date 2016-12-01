@@ -245,10 +245,13 @@ function init()
   };
 
   socket.on("youtube", function(data){
-    console.log("> youtube: " + data.id + " from " + data.start + " to " + data.end);
-    document.playYoutube(data.id, data.start, data.end);
-
-    ytToastQueue.push({id: data.id, user: data.user});
+    if(localStorage.getItem('youtube-disabled') !== 'true') {
+      console.log("> youtube: " + data.id + " from " + data.start + " to " + data.end);
+      document.playYoutube(data.id, data.start, data.end);
+      ytToastQueue.push({id: data.id, user: data.user});
+    } else {
+      console.log("ignoring > youtube: " + data.id + " from " + data.start + " to " + data.end);
+    }
   });
 
   document.playYoutube = function(id, start, end){
