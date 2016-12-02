@@ -28,6 +28,7 @@ function play(id) {
 
 var userid;
 var hiddenid;
+var ytplayer;
 
 function init()
 {
@@ -122,6 +123,12 @@ function init()
       $('.keyhint').hide();
       $('.label').hide();
       $('.cost').hide();
+    } else if(keyCode === 192) { // `/~
+      if(localStorage.getItem('youtube-disabled') !== 'true') {
+        $('#ytpopup').show();
+      } else {
+        document.toast('Enable YouTube first');
+      }
     } else {
       $('.soundItem[data-keycode="' + keyCode + '"]').click();
     }
@@ -162,7 +169,7 @@ function init()
   });
 
   socket.on("errormsg", function(data){
-    console.log("Error: " + data);
+    console.error(data);
     document.toast(data);
   });
 
@@ -177,6 +184,86 @@ function init()
     console.log("> name: " + name);
     socket.emit('name', name);
   }
+
+  // YouTube
+
+  var ytToastQueue = [];
+
+  var getYoutubeStatusDescription = function(id) {
+    switch(id) {
+      case -1: return 'unstarted';
+      case 0: return 'ended';
+      case 1: return 'playing';
+      case 2: return 'paused';
+      case 3: return 'buffering';
+      case 4: return 'video cued';
+    }
+  }
+
+  var onPlayerStateChange = function(event) {
+    $('#ytstatus').text(getYoutubeStatusDescription(event.data));
+
+    // When the player starts playing
+    if(event.data === 1) {
+      var vd = ytplayer.getVideoData();
+      // Check available toast info
+      for(var i=0; i<ytToastQueue.length; ++i) {
+        // for a matching video id
+        if(ytToastQueue[i].id === vd.video_id) {
+          var tis = ytToastQueue.splice(i, i+1);
+          var ti = tis[0];
+          // Show a toast with the video title available when video is loaded
+          document.toast(vd.title + ' - ' + ti.user);
+        }
+      }
+    }
+
+  };
+
+  window.onYouTubeIframeAPIReady = function() {
+    ytplayer = new YT.Player('ytplayer', {
+      'height': '390',
+      'width': '640',
+      playerVars: { 'autoplay': 1, 'controls': 1, 'showinfo': 0 },
+      events: {
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  if(localStorage.getItem('youtube-disabled') !== 'true') {
+    $('#ytEnabled').prop('checked', true);
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+
+  document.sendYoutube = function(id, start, end) {
+    console.log("> youtube " + id + ", " + start + ", " + end);
+    socket.emit('youtube', {youtubeId: id, start: start, end: end, hiddenid: hiddenid});
+  };
+
+  socket.on("youtube", function(data){
+    if(localStorage.getItem('youtube-disabled') !== 'true') {
+      console.log("> youtube: " + data.id + " from " + data.start + " to " + data.end);
+      document.playYoutube(data.id, data.start, data.end);
+      ytToastQueue.push({id: data.id, user: data.user});
+    } else {
+      console.log("ignoring > youtube: " + data.id + " from " + data.start + " to " + data.end);
+    }
+  });
+
+  document.playYoutube = function(id, start, end){
+    ytplayer.loadVideoById({videoId: id, startSeconds: start, endSeconds: end});
+  };
+
+  window.ytSetEnabled = function(enabled) {
+    localStorage.setItem('youtube-disabled', !enabled);
+    document.location = document.location;
+  }
+
+  // End Youtube
 
   hiddenid = localStorage.getItem('hiddenid');
   if(hiddenid === null) {
