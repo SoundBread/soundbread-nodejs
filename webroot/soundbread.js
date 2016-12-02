@@ -264,6 +264,11 @@ function init()
     document.location = document.location;
   }
 
+  $('#ytId').change(function() {
+    $('#ytStart').val(0);
+    $('#ytEnd').val(0);
+  });
+
   // End Youtube
 
   hiddenid = localStorage.getItem('hiddenid');
