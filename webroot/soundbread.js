@@ -123,6 +123,7 @@ function init()
       $('.keyhint').hide();
       $('.label').hide();
       $('.cost').hide();
+      $('#ytpopup').hide();
     } else if(keyCode === 192) { // `/~
       if(localStorage.getItem('youtube-disabled') !== 'true') {
         $('#ytpopup').show();
