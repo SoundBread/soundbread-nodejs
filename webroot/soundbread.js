@@ -192,11 +192,11 @@ function init()
   var getYoutubeStatusDescription = function(id) {
     switch(id) {
       case -1: return 'unstarted';
-      case 0: return 'ended';
-      case 1: return 'playing';
-      case 2: return 'paused';
-      case 3: return 'buffering';
-      case 4: return 'video cued';
+      case YT.PlayerState.ENDED: return 'ended';
+      case YT.PlayerState.PLAYING: return 'playing';
+      case YT.PlayerState.PAUSED: return 'paused';
+      case YT.PlayerState.BUFFERING: return 'buffering';
+      case YT.PlayerState.CUED: return 'video cued';
     }
   }
 
