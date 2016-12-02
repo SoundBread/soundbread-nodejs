@@ -81,13 +81,13 @@ function retreiveCredits(socket) {
 		creditStore.setItem(hiddenid, credits);
 		console.log('Giving user ' + socket.id + ' initial amount of credits: ' + maxcredits);
 	}
-	socket.emit('credits', credits);
+	return credits;
 }
 
 // returns true if enough credits are available
 function useCredits(socket, amount) {
 	var hiddenid = clients[socket.id].hiddenid;
-	var credits = creditStore.getItem(hiddenid);
+	var credits = retreiveCredits(socket);
 	if (credits !== undefined && credits >= amount) {
 		credits -= amount;
 		creditStore.setItem(hiddenid, credits);
@@ -142,6 +142,15 @@ io.on('connection', function(socket){
 		}
 	});
 
+	socket.on('killswitch', function(data) {
+		var hiddenid = clients[socket.id].hiddenid;
+		// Kill switch costs all user credits and at least 1
+		var credits = Math.max(1, creditStore.getItem(hiddenid));
+		if(useCredits(socket, credits)) {
+			io.sockets.emit('killswitch', {user: clients[socket.id].name});
+		}
+	});
+
 	socket.on('name', function(name) {
 		console.log('User ' + socket.id + ' changed name from ' + clients[socket.id].name + ' to ' + name);
 		clients[socket.id].name = name;
@@ -151,7 +160,7 @@ io.on('connection', function(socket){
 	socket.on('hiddenid', function(hiddenid) {
 		console.log('User ' + socket.id + ' set hiddenid from ' + clients[socket.id].hiddenid + ' to ' + hiddenid);
 		clients[socket.id].hiddenid = hiddenid;
-		retreiveCredits(socket);
+		socket.emit('credits', retreiveCredits(socket));
 		createTimeout(socket);
 	});
 });

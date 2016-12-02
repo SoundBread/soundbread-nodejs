@@ -116,6 +116,9 @@ $(document).ready(function() {
 			$('.label').hide();
 			$('.cost').hide();
 			$('#ytpopup').hide();
+		} else if(keyCode === 46) { // Del
+			createjs.Sound.stop();
+			socket.emit('killswitch');
 		} else if(keyCode === 192) { // `/~
 			if(localStorage.getItem('youtube-disabled') !== 'true') {
 				$('#ytpopup').show();
@@ -154,6 +157,11 @@ $(document).ready(function() {
 		var sound = sounds.filter(function(x) { return x.id === data.audio; })[0];
 		play(sound.id);
 		document.toast(sound.title + ' - ' + data.user);
+	});
+
+	socket.on('killswitch', function(data) {
+		createjs.Sound.stop();
+		document.toast('KILL SWITCH - ' + data.user);
 	});
 
 	socket.on('credits', function(data){
