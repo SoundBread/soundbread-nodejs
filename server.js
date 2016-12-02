@@ -32,7 +32,6 @@ app.use('/settings.js', function(req, res, next) {
 		res.sendFile(__dirname + '/settings.default.js');
 		return;
 	}
-	next();
 });
 
 // API
@@ -48,13 +47,13 @@ var clients = {};
 clients.size = function(){
 	var size = 0, key;
 	for (key in clients) {
-			if (clients.hasOwnProperty(key))
-			{
-				size++;
-			}
+		if (clients.hasOwnProperty(key))
+		{
+			size++;
+		}
 	}
 	return size-1;
-}
+};
 
 // Credit timer
 function createTimeout(socket) {
@@ -65,7 +64,7 @@ function createTimeout(socket) {
 			credits++;
 			creditStore.setItem(hiddenid, credits);
 			socket.emit('credits', credits);
-			console.log("User " + socket.id + " now has " + credits + " credits");
+			console.log('User ' + socket.id + ' now has ' + credits + ' credits');
 		}
 		createTimeout(socket);
 	}, creditTimeout);
@@ -76,11 +75,11 @@ function createTimeout(socket) {
 function retreiveCredits(socket) {
 	var hiddenid = clients[socket.id].hiddenid;
 	var credits = creditStore.getItem(hiddenid);
-	console.log("User " + socket.id + " has " + credits + " credits.");
+	console.log('User ' + socket.id + ' has ' + credits + ' credits.');
 	if (credits === undefined) {
 		credits = maxcredits;
 		creditStore.setItem(hiddenid, credits);
-		console.log("Giving user " + socket.id + " initial amount of credits: " + maxcredits);
+		console.log('Giving user ' + socket.id + ' initial amount of credits: ' + maxcredits);
 	}
 	socket.emit('credits', credits);
 }
@@ -93,36 +92,36 @@ function useCredits(socket, amount) {
 		credits -= amount;
 		creditStore.setItem(hiddenid, credits);
 		socket.emit('credits', credits);
-		console.log("User " + socket.id + " now has " + credits + " credits");
+		console.log('User ' + socket.id + ' now has ' + credits + ' credits');
 		return true;
 	}
 	return false;
 }
 
 // New connection, add to the pool
-io.on("connection", function(socket){
+io.on('connection', function(socket){
 	clients[socket.id] = {};
-	console.info("Client joined, now: "+ clients.size());
+	console.info('Client joined, now: '+ clients.size());
 	socket.emit('version', pjson.version);
 	io.sockets.emit('clients', clients.size());
 
 	// Connection closed, remove from pool
-	socket.on("disconnect", function(){
+	socket.on('disconnect', function(){
 		clearTimeout(clients[socket.id].credittimer);
 		delete clients[socket.id];
-		console.info("Client left, now: "+clients.size());
+		console.info('Client left, now: '+clients.size());
 		io.sockets.emit('clients', clients.size());
 	});
 
 	// Client wants to play audio
-	socket.on("play", function(data){
+	socket.on('play', function(data){
 		clients[socket.id].hiddenid = data.hiddenid;
 
 		var cost = sounds.filter(function(x) { return x.id === data.soundId; })[0].cost;
 		if (cost === undefined) { cost = 1; }
 
 		if (useCredits(socket, cost)) {
-			console.log("Playing audio: "+data.soundId+" by " + clients[socket.id].name);
+			console.log('Playing audio: '+data.soundId+' by ' + clients[socket.id].name);
 			var playData = {audio: data.soundId, user: clients[socket.id].name};
 			io.sockets.emit('play', playData);
 		} else {
@@ -130,12 +129,12 @@ io.on("connection", function(socket){
 		}
 	});
 
-	socket.on("youtube", function(data){
+	socket.on('youtube', function(data){
 		clients[socket.id].hiddenid = data.hiddenid;
 
 		var cost = youtubeCost;
 		if(useCredits(socket, cost)) {
-			console.log("Playing youtube: "+data.youtubeId+" from "+data.start+" to "+data.end+" by " + clients[socket.id].name);
+			console.log('Playing youtube: '+data.youtubeId+' from '+data.start+' to '+data.end+' by ' + clients[socket.id].name);
 			var playData = {id: data.youtubeId, start: data.start, end: data.end, user: clients[socket.id].name};
 			io.sockets.emit('youtube', playData);
 		} else {
@@ -143,14 +142,14 @@ io.on("connection", function(socket){
 		}
 	});
 
-	socket.on("name", function(name) {
-		console.log("User " + socket.id + " changed name from " + clients[socket.id].name + " to " + name);
+	socket.on('name', function(name) {
+		console.log('User ' + socket.id + ' changed name from ' + clients[socket.id].name + ' to ' + name);
 		clients[socket.id].name = name;
 		io.sockets.emit('name', name);
 	});
 
-	socket.on("hiddenid", function(hiddenid) {
-		console.log("User " + socket.id + " set hiddenid from " + clients[socket.id].hiddenid + " to " + hiddenid);
+	socket.on('hiddenid', function(hiddenid) {
+		console.log('User ' + socket.id + ' set hiddenid from ' + clients[socket.id].hiddenid + ' to ' + hiddenid);
 		clients[socket.id].hiddenid = hiddenid;
 		retreiveCredits(socket);
 		createTimeout(socket);
@@ -159,5 +158,5 @@ io.on("connection", function(socket){
 
 // Start server
 server.listen(port, ipaddress, function(){
-	console.info("Server ("+pjson.version+") started listening on port: "+ port);
+	console.info('Server ('+pjson.version+') started listening on port: '+ port);
 });

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "jshint": "jshint -c .jshintrc --exclude-path .jshintignore .",
-    "test": "npm run jshint && ./scripts/test-images.sh"
+	"eslint": "eslint -c .eslintrc.json .",
+    "test": "npm run jshint && npm run eslint && ./scripts/test-images.sh"
   },
   "pre-commit": [
     "test"
@@ -28,6 +29,7 @@
     "socket.io": "^1.4.6"
   },
   "devDependencies": {
+    "eslint": "^3.11.1",
     "jshint": "~2.9.2",
     "pre-commit": "~1.1.3"
   }
