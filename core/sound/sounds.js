@@ -32,7 +32,7 @@ sounds = [
   {src: 'tirol.mp3', img: 'tirol.jpg', id: 'tirol', title: 'Absolut Tirol'},
   {src: 'overdracht.mp3', img: 'overdracht.jpg', id: 'overdracht', title: 'OVERDRACHT!'},
   {src: 'power.mp3', img: 'power.jpg', id: 'power', title: 'I\'ve got the power'},
-  {src: 'mario.mp3', img: 'mario.jpg', id: 'mario', title: 'Super Mario Bross'},
+  {src: 'mario.mp3', img: 'mario.jpg', id: 'mario', title: 'Super Mario Bross', cost: 3},
   // Keep hidden: true at end to not show hints in shortcuts
   {src: 'maniacal.mp3', img: 'maniacal.jpg', id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: 'gaaay.mp3', img: 'gaaay.jpg', id: 'gaaay', title: 'Gaaay', hidden: true},
