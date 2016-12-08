@@ -256,6 +256,8 @@ $(document).ready(function() {
 	});
 
 	document.playYoutube = function(id, start, end){
+		ytplayer.unMute();
+		ytplayer.setVolume(100);
 		ytplayer.loadVideoById({videoId: id, startSeconds: start, endSeconds: end});
 	};
 
