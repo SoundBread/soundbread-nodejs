@@ -34,6 +34,7 @@ sounds = [
   {src: 'power.mp3', img: 'power.jpg', id: 'power', title: 'I\'ve got the power'},
   {src: 'mario.mp3', img: 'mario.jpg', id: 'mario', title: 'Super Mario Bross', cost: 3},
   {src: 'kingoflosers.mp3', img: 'kingoflosers.jpg', id: 'loserking', title: 'King of the losers', cost: 2},
+  {src: 'kluis.mp3', img: 'kluis.jpg', id: 'kluis', title: 'kluis', cost: 1},
   // Keep hidden: true at end to not show hints in shortcuts
   {src: 'maniacal.mp3', img: 'maniacal.jpg', id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: 'gaaay.mp3', img: 'gaaay.jpg', id: 'gaaay', title: 'Gaaay', hidden: true},
