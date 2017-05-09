@@ -152,6 +152,7 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('name', function(name) {
+		name = name.substr(0, 20);
 		console.log('User ' + socket.id + ' changed name from ' + clients[socket.id].name + ' to ' + name);
 		clients[socket.id].name = name;
 		io.sockets.emit('name', name);
