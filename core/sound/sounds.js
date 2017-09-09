@@ -37,6 +37,7 @@ sounds = [
   {src: 'kluis.mp3', img: 'kluis.jpg', id: 'kluis', title: 'kluis', cost: 1},
   {src: 'woodpecker.mp3', img: 'woodpecker.jpg', id: 'woodpecker', title: 'Woody', cost: 1},
   {src: 'bright.mp3', img: 'bright.jpg', id: 'bright', title: 'Bright Light', cost: 1},
+  {src: 'goedzo.mp3', img: 'goedzo.jpg', id: 'goedzo', title: 'Wel Goed Zo Hoor!', cost: 1},
   // Keep hidden: true at end to not show hints in shortcuts
   {src: 'maniacal.mp3', img: 'maniacal.jpg', id: 'maniacal', title: 'Maniacal', hidden:true},
   {src: 'gaaay.mp3', img: 'gaaay.jpg', id: 'gaaay', title: 'Gaaay', hidden: true},
