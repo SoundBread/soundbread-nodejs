@@ -119,7 +119,7 @@ $(document).ready(function() {
 		} else if(keyCode === 46) { // Del
 			createjs.Sound.stop();
 			socket.emit('killswitch');
-		} else if(keyCode === 192) { // `/~
+		} else if(keyCode === 61) { // '=' or '+'
 			if(localStorage.getItem('youtube-disabled') !== 'true') {
 				$('#ytpopup').show();
 			} else {
