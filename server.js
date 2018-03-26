@@ -169,5 +169,4 @@ io.on('connection', function(socket){
 // Start server
 server.listen(port, ipaddress, function(){
 	console.info('Server ('+pjson.version+') started listening on port: '+ port);
-	console.log(process.env.LOCAL);
 });
