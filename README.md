@@ -10,7 +10,7 @@ npm start
 
 ## Sprite generation with imagemagick
 ```
-convert <input_img> -resize 190x190 -gravity center -extent 190x190 -transparent white <output>.jpg
+convert <input_img> -resize 190x190^ -gravity center -extent 190x190 -transparent white <output>.jpg
 ```
 
 ## Youtube audio download
