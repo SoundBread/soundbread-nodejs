@@ -1,4 +1,5 @@
 /* global createjs, YT, io, clientSettings */
+/* exported openTab */
 
 function soundLoaded(/*event*/) {
 	// Sound is loaded, show button
@@ -19,6 +20,14 @@ function play(id) {
 		$('#' + id).removeClass('active');
 	});
 }
+
+this.openTab = function(evt, tabName) {
+	$('.tablinks').removeClass('active');
+	$(evt.currentTarget).addClass('active');
+
+	$('.tabcontent').removeClass('active');
+	$('#'+tabName).addClass('active');
+};
 
 var userid;
 var hiddenid;
@@ -54,43 +63,48 @@ $(document).ready(function() {
 	createjs.Sound.registerSounds(sounds, assetsPath);
 
 	$(sounds).each(function(i, sound) {
-		var keycode = keycodes[i];
+		if(sound.cats !== undefined) {
+			Object.keys(sound.cats).forEach(function(i) {
+				var cat = sound.cats[i];
+				var tab_sub_n = $('#tab_'+cat).children().length;
+				var keycode = keycodes[tab_sub_n];
 
-		var labeldiv = $('<div>');
-		labeldiv.attr('class', 'label');
-		labeldiv.text(sound.title);
+				var labeldiv = $('<div>');
+				labeldiv.attr('class', 'label');
+				labeldiv.text(sound.title);
 
-		var costdiv = $('<div>');
-		costdiv.attr('class', 'cost');
-		costdiv.text(sound.cost === undefined ? 1 : sound.cost);
+				var costdiv = $('<div>');
+				costdiv.attr('class', 'cost');
+				costdiv.text(sound.cost === undefined ? 1 : sound.cost);
 
-		var sounddiv = $('<div>');
-		sounddiv.attr('id', sound.id);
-		sounddiv.attr('style', 'background-image:url(img/' + sound.img + ')');
-		if(sound.hidden) {
-			sounddiv.attr('style', sounddiv.attr('style') + '; display: none');
+				var sounddiv = $('<div>');
+				sounddiv.attr('id', sound.id);
+				sounddiv.attr('style', 'background-image:url(img/' + sound.img + ')');
+				if(sound.hidden) {
+					sounddiv.attr('style', sounddiv.attr('style') + '; display: none');
+				}
+				sounddiv.attr('class', 'soundItem gridBox');
+				sounddiv.attr('data-keycode', keycode);
+				sounddiv.append(labeldiv);
+				sounddiv.append(costdiv);
+
+				$('#tab_'+cat).append(sounddiv);
+				var hintkey = String.fromCharCode(keycode);
+				var hintdiv = $('<div class="keyhint">' + hintkey + '</div>');
+				hintdiv.hide();
+				sounddiv.append(hintdiv);
+
+				sounddiv.click(function() {
+					var self = this;
+					var id = $(self).attr('id');
+
+					var playData = {soundId: id, hiddenid: hiddenid};
+					console.log(playData);
+					console.log('< play ' + playData.soundId);
+					socket.emit('play', playData);
+				});
+			});
 		}
-		sounddiv.attr('class', 'soundItem gridBox');
-		sounddiv.attr('data-keycode', keycode);
-		sounddiv.append(labeldiv);
-		sounddiv.append(costdiv);
-		$('#content').append(sounddiv);
-
-		var hintkey = String.fromCharCode(keycode);
-		var hintdiv = $('<div class="keyhint">' + hintkey + '</div>');
-		hintdiv.hide();
-		sounddiv.append(hintdiv);
-
-		sounddiv.click(function() {
-			var self = this;
-			var id = $(self).attr('id');
-
-			var playData = {soundId: id, hiddenid: hiddenid};
-			console.log(playData);
-			console.log('< play ' + playData.soundId);
-			socket.emit('play', playData);
-		});
-
 	});
 
 	// Simple keybinding
@@ -126,7 +140,7 @@ $(document).ready(function() {
 				document.toast('Enable YouTube first');
 			}
 		} else {
-			$('.soundItem[data-keycode="' + keyCode + '"]').click();
+			$('.active .soundItem[data-keycode="' + keyCode + '"]').click();
 		}
 	});
 

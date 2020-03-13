@@ -18,6 +18,40 @@
         margin-bottom: 0px;
       }
 
+      .tabs {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+      }
+
+      .tabs button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+      }
+
+      .tabs button:hover {
+        background-color: #ddd;
+      }
+
+      .tabs button.active {
+        background-color: #72a0c8;
+      }
+
+      .tabcontent {
+        display: none;
+      }
+
+      .tabcontent.active {
+        display: block;
+      }
+
       #content {
         width: 100%;
         font-size: 0;
@@ -177,7 +211,13 @@
       </div>
     </div>
 
-    <div id="content"></div>
+	<div class="tabs">
+		<button class="tablinks active" onclick="openTab(event, 'tab_main')">Main</button>
+		<button class="tablinks" onclick="openTab(event, 'tab_dumpert')">Dumpert</button>
+	</div>
+
+	<div id="tab_main" class="tabcontent active"></div>
+	<div id="tab_dumpert" class="tabcontent"></div>
 
    <div>
       Press '?' for key hints
