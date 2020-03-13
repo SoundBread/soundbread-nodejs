@@ -21,12 +21,14 @@ function play(id) {
 	});
 }
 
-this.openTab = function(evt, tabName) {
+this.openTab = function(tabName) {
 	$('.tablinks').removeClass('active');
-	$(evt.currentTarget).addClass('active');
+	$('#btn_'+tabName).addClass('active');
 
 	$('.tabcontent').removeClass('active');
 	$('#'+tabName).addClass('active');
+
+	document.location.href = '#'+tabName;
 };
 
 var userid;
@@ -304,5 +306,10 @@ $(document).ready(function() {
 	}
 	$('#userid').val(userid);
 	document.updateName(userid);
+
+	var tab = document.location.hash.substring(1);
+	if(tab !== '') {
+		window.openTab(tab);
+	}
 });
 // vim: set ts=4 sw=4 tw=0 noet :
