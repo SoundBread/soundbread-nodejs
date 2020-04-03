@@ -44,6 +44,7 @@ sounds = [
   {src: 'greenbrain.mp3', img: 'greenbrain.jpg', id: 'greenbrain', title: 'Brainstorm', hidden: false, cats: ['main']},
   {src: 'boodschap.mp3', img: 'boodschap.jpg', id: 'boodschap', title: 'Boodschap', hidden: false, cats: ['main']},
   {src: 'zoenen.mp3', img: 'zoenen.jpg', id: 'zoenen', title: 'Zoenen', hidden: false, cats: ['main']},
+  {src: 'magic_moments.mp3', img: 'magic_moments.jpg', id: 'magic_moments', title: 'Magic Moments', hidden: false, cats: ['main']},
   // Integration of Dumpert Soundboard items
   {src: 'dumpert/5_euros.mp3', img: 'dumpert/5_euros.jpg', id: 'dumpert_5_euros', title: '5_euros', cats: ['dumpert']},
   {src: 'dumpert/village_people_360_kick.mp3', img: 'dumpert/village_people_360_kick.jpg', id: 'dumpert_village_people_360_kick', title: 'village_people_360_kick', cats: ['dumpert']},
