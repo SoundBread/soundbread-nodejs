@@ -40,6 +40,7 @@ sounds = [
   {src: 'goedzo.mp3', img: 'goedzo.jpg', id: 'goedzo', title: 'Wel Goed Zo Hoor!', cost: 1, cats: ['main']},
   {src: 'water.mp3', img: 'water.jpg', id: 'water', title: 'Water?', cost: 1, cats: ['main']},
   {src: 'buma.mp3', img: 'buma.jpg', id: 'buma', title: 'Dat is toch niet te geloven?', cost: 1, cats: ['main']},
+  {src: 'dus_chapeau.mp3', img: 'chapeau.jpg', id: 'chapeau', title: 'Dus Chapeau!', cost: 1, cats: ['main']},
   {src: 'goodmorning.mp3', img: 'goodmorning.jpg', id: 'goodmorning', title: 'Good Morning', cost: 1, cats: ['main']},
   {src: 'greenbrain.mp3', img: 'greenbrain.jpg', id: 'greenbrain', title: 'Brainstorm', hidden: false, cats: ['main']},
   {src: 'boodschap.mp3', img: 'boodschap.jpg', id: 'boodschap', title: 'Boodschap', hidden: false, cats: ['main']},
