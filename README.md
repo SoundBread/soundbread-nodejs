@@ -14,7 +14,7 @@ convert <input_img> -resize 190x190^ -gravity center -extent 190x190 -transparen
 ```
 
 ## Youtube audio download
-Use youtube-dl (https://github.com/rg3/youtube-dl/) to download audio:
+Use youtube-dl (https://youtube-dl.org/) to download audio:
 ```
 youtube-dl --extract-audio --audio-format mp3 https://www.youtube.com/watch?v=m0JvNKg7vcc
 ```
